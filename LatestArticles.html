@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Latest Articles – TenantToolsHub</title>
+
+<style>
+
+/* --------------------
+GLOBAL
+-------------------- */
+
+body{
+    margin:0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:linear-gradient(135deg, #f5f7fa 0%, #e8ecf4 100%);
+    color:#222;
+}
+
+.main-layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:auto;
+}
+
+section{
+    padding:70px 0;
+    position:relative;
+}
+
+h1,h2,h3{
+    margin-bottom:15px;
+}
+
+h2{
+    color:#1a1a1a;
+    font-size:32px;
+    font-weight:700;
+}
+
+p{
+    line-height:1.6;
+}
+
+/* Decorative elements */
+section::before{
+    content:'';
+    position:absolute;
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    background:rgba(43, 89, 255, 0.05);
+    z-index:0;
+}
+
+section:nth-child(odd)::before{
+    top:20px;
+    left:10%;
+}
+
+section:nth-child(even)::before{
+    bottom:20px;
+    right:10%;
+}
+
+/* --------------------
+SIDEBAR
+-------------------- */
+
+.sidebar{
+    width:250px;
+    background:linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
+    border-right:2px solid #e0e6f0;
+    padding:30px 20px;
+    position:fixed;
+    height:100vh;
+    overflow-y:auto;
+    transition:transform 0.3s ease;
+    z-index:1000;
+    box-shadow:4px 0 15px rgba(0,0,0,0.05);
+}
+
+.sidebar.collapsed{
+    transform:translateX(-250px);
+}
+
+.sidebar h3{
+    color:#2b59ff;
+    font-size:18px;
+    margin-bottom:20px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.sidebar ul li{
+    margin-bottom:8px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:#444;
+    font-size:14px;
+    display:block;
+    padding:12px 15px;
+    border-radius:8px;
+    transition:all 0.3s ease;
+    font-weight:500;
+    border-left:3px solid transparent;
+}
+
+.sidebar ul li a:hover{
+    background:linear-gradient(90deg, #f0f4ff 0%, #e8eeff 100%);
+    color:#2b59ff;
+    border-left-color:#2b59ff;
+    transform:translateX(5px);
+    box-shadow:0 2px 8px rgba(43, 89, 255, 0.1);
+}
+
+.sidebar ul li a.active{
+    background:linear-gradient(90deg, #f0f4ff 0%, #e8eeff 100%);
+    color:#2b59ff;
+    border-left-color:#2b59ff;
+    font-weight:700;
+}
+
+.toggle-btn{
+    position:fixed;
+    left:250px;
+    top:20px;
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    color:white;
+    border:none;
+    padding:12px 18px;
+    cursor:pointer;
+    border-radius:0 8px 8px 0;
+    z-index:1001;
+    transition:all 0.3s ease;
+    font-size:20px;
+    box-shadow:2px 2px 10px rgba(43, 89, 255, 0.3);
+}
+
+.toggle-btn:hover{
+    background:linear-gradient(135deg, #1a47ff 0%, #4a6aff 100%);
+    box-shadow:2px 2px 15px rgba(43, 89, 255, 0.5);
+    transform:scale(1.05);
+}
+
+.toggle-btn.collapsed{
+    left:0;
+}
+
+/* --------------------
+MAIN CONTENT
+-------------------- */
+
+.main-content{
+    margin-left:250px;
+    flex:1;
+    transition:margin-left 0.3s ease;
+}
+
+.main-content.expanded{
+    margin-left:0;
+}
+
+/* --------------------
+HEADER
+-------------------- */
+
+header{
+    background:linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+    padding:20px 0;
+    border-bottom:2px solid #e0e6f0;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    position:relative;
+    z-index:100;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:800;
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    letter-spacing:-0.5px;
+}
+
+/* --------------------
+PAGE HEADER
+-------------------- */
+
+.page-header{
+    background:linear-gradient(135deg,#2b59ff 0%,#6b86ff 50%, #8f9fff 100%);
+    color:white;
+    text-align:center;
+    padding:80px 20px;
+    position:relative;
+    overflow:hidden;
+}
+
+.page-header::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation:pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse{
+    0%, 100%{
+        transform:scale(1) rotate(0deg);
+    }
+    50%{
+        transform:scale(1.1) rotate(5deg);
+    }
+}
+
+.page-header h1{
+    font-size:44px;
+    font-weight:800;
+    position:relative;
+    z-index:1;
+    text-shadow:2px 2px 20px rgba(0,0,0,0.2);
+    margin:0;
+}
+
+.page-header p{
+    font-size:18px;
+    position:relative;
+    z-index:1;
+    opacity:0.95;
+    margin:15px 0 0 0;
+}
+
+/* --------------------
+BLOG SECTION
+-------------------- */
+
+.blog-section{
+    background:linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
+}
+
+/* Category Filter */
+.category-filter{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.category-filter button{
+    padding:10px 25px;
+    margin:5px;
+    background:white;
+    border:2px solid #e0e6f0;
+    border-radius:25px;
+    font-size:14px;
+    font-weight:600;
+    color:#444;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+
+.category-filter button:hover{
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    color:white;
+    border-color:#2b59ff;
+    transform:translateY(-2px);
+    box-shadow:0 4px 15px rgba(43, 89, 255, 0.3);
+}
+
+.category-filter button.active{
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    color:white;
+    border-color:#2b59ff;
+}
+
+/* Blog Grid */
+.blog-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+    gap:35px;
+    position:relative;
+    z-index:1;
+}
+
+/* Blog Card */
+.blog-card{
+    background:linear-gradient(145deg, #ffffff 0%, #f8f9fc 100%);
+    border-radius:12px;
+    overflow:hidden;
+    border:2px solid #e8ecf4;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor:pointer;
+}
+
+.blog-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 12px 35px rgba(43, 89, 255, 0.2);
+    border-color:#2b59ff;
+}
+
+.blog-image{
+    width:100%;
+    height:200px;
+    background:linear-gradient(135deg, #6b86ff 0%, #8f9fff 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:50px;
+    position:relative;
+    overflow:hidden;
+}
+
+.blog-image::after{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:linear-gradient(135deg, rgba(43, 89, 255, 0.3) 0%, rgba(107, 134, 255, 0.3) 100%);
+}
+
+.blog-content{
+    padding:25px;
+}
+
+.blog-meta{
+    display:flex;
+    gap:15px;
+    margin-bottom:15px;
+    font-size:13px;
+    color:#666;
+}
+
+.blog-category{
+    background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    color:#2b59ff;
+    padding:4px 12px;
+    border-radius:12px;
+    font-weight:600;
+    font-size:12px;
+}
+
+.blog-date{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.blog-card h3{
+    font-size:22px;
+    color:#1a1a1a;
+    margin:0 0 12px 0;
+    font-weight:700;
+    line-height:1.3;
+}
+
+.blog-excerpt{
+    color:#555;
+    font-size:15px;
+    line-height:1.6;
+    margin:0 0 20px 0;
+}
+
+.read-more{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#2b59ff;
+    font-weight:600;
+    font-size:14px;
+    text-decoration:none;
+    transition:all 0.3s ease;
+}
+
+.read-more:hover{
+    gap:12px;
+    color:#1a47ff;
+}
+
+/* Featured Article */
+.featured-article{
+    grid-column:1 / -1;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+    background:linear-gradient(145deg, #ffffff 0%, #f8f9fc 100%);
+    border-radius:12px;
+    overflow:hidden;
+    border:2px solid #e8ecf4;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    transition:all 0.4s ease;
+}
+
+.featured-article:hover{
+    box-shadow:0 12px 35px rgba(43, 89, 255, 0.2);
+    border-color:#2b59ff;
+}
+
+.featured-image{
+    width:100%;
+    height:100%;
+    min-height:300px;
+    background:linear-gradient(135deg, #2b59ff 0%, #6b86ff 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:80px;
+    position:relative;
+}
+
+.featured-image::after{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:linear-gradient(135deg, rgba(43, 89, 255, 0.3) 0%, rgba(107, 134, 255, 0.3) 100%);
+}
+
+.featured-content{
+    padding:40px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.featured-badge{
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    color:white;
+    padding:6px 15px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    display:inline-block;
+    width:fit-content;
+    margin-bottom:15px;
+}
+
+.featured-content h2{
+    font-size:32px;
+    margin:0 0 15px 0;
+    color:#1a1a1a;
+}
+
+.featured-content .blog-excerpt{
+    font-size:16px;
+    margin-bottom:25px;
+}
+
+/* --------------------
+FOOTER
+-------------------- */
+
+footer{
+    background:linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color:white;
+    text-align:center;
+    padding:40px;
+    position:relative;
+    overflow:hidden;
+}
+
+footer::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle, rgba(43, 89, 255, 0.1) 0%, transparent 70%);
+}
+
+footer p{
+    position:relative;
+    z-index:1;
+    font-size:15px;
+    margin:0;
+}
+
+/* --------------------
+RESPONSIVE
+-------------------- */
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-250px);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .toggle-btn {
+        left: 0;
+    }
+    
+    .blog-grid{
+        grid-template-columns:1fr;
+    }
+    
+    .featured-article{
+        grid-template-columns:1fr;
+    }
+    
+    .featured-content{
+        padding:25px;
+    }
+    
+    .page-header h1{
+        font-size:32px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="main-layout">
+
+<!-- TOGGLE BUTTON -->
+<button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">☰</button>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+<h3>Navigation</h3>
+<ul>
+<li><a href="#Index.html">HOMEPAGE GOALS</a></li>
+<li><a href="#hero">HERO SECTION (Top of Page)</a></li>
+<li><a href="FeaturedCalculators.html">FEATURED CALCULATORS</a></li>
+<li><a href="RentGuideSection.html">RENT GUIDES SECTION</a></li>
+<li><a href="MovingAndUtilities.html">MOVING & UTILITIES SECTION</a></li>
+<li><a href="#pdfs">FREE PDFS</a></li>
+<li><a href="LatestArticles.html">LATEST ARTICLES</a></li>
+</ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content" id="mainContent">
+
+<!-- HEADER -->
+<header>
+<div class="container">
+<div class="logo">TenantToolsHub</div>
+</div>
+</header>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+<h1>Latest Articles</h1>
+<p>Expert tips and guides for Nigerian renters</p>
+</section>
+
+<!-- BLOG SECTION -->
+<section class="blog-section">
+<div class="container">
+
+<!-- Category Filter -->
+<div class="category-filter">
+<button class="active">All Articles</button>
+<button>Renting Tips</button>
+<button>Legal Advice</button>
+<button>Moving Guides</button>
+<button>Money Saving</button>
+</div>
+
+<!-- Blog Grid -->
+<div class="blog-grid">
+
+<!-- Featured Article -->
+<article class="featured-article">
+<div class="featured-image">📰</div>
+<div class="featured-content">
+<span class="featured-badge">Featured</span>
+<h2>Complete Guide to Renting in Lagos 2026</h2>
+<div class="blog-meta">
+<span class="blog-category">Renting Tips</span>
+<span class="blog-date">📅 Jan 25, 2026</span>
+</div>
+<p class="blog-excerpt">Everything you need to know about finding, viewing, and securing your perfect apartment in Lagos. From negotiating rent to understanding your rights as a tenant.</p>
+<a href="#" class="read-more">Read Full Guide →</a>
+</div>
+</article>
+
+<!-- Regular Blog Cards -->
+<article class="blog-card">
+<div class="blog-image">🏠</div>
+<div class="blog-content">
+<div class="blog-meta">
+<span class="blog-category">Legal Advice</span>
+<span class="blog-date">📅 Jan 20, 2026</span>
+</div>
+<h3>Understanding Your Tenancy Agreement</h3>
+<p class="blog-excerpt">Learn what to look for in your tenancy agreement and protect yourself from unfair clauses.</p>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-card">
+<div class="blog-image">💰</div>
+<div class="blog-content">
+<div class="blog-meta">
+<span class="blog-category">Money Saving</span>
+<span class="blog-date">📅 Jan 18, 2026</span>
+</div>
+<h3>How to Negotiate Your Rent Successfully</h3>
+<p class="blog-excerpt">Proven strategies to negotiate better rent prices and payment terms with landlords.</p>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-card">
+<div class="blog-image">📋</div>
+<div class="blog-content">
+<div class="blog-meta">
+<span class="blog-category">Renting Tips</span>
+<span class="blog-date">📅 Jan 15, 2026</span>
+</div>
+<h3>Red Flags When Viewing Apartments</h3>
+<p class="blog-excerpt">Key warning signs to watch out for during apartment viewings to avoid problem properties.</p>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-card">
+<div class="blog-image">🚚</div>
+<div class="blog-content">
+<div class="blog-meta">
+<span class="blog-category">Moving Guides</span>
+<span class="blog-date">📅 Jan 12, 2026</span>
+</div>
+<h3>Moving Day Checklist: Don't Forget These</h3>
+<p class="blog-excerpt">A comprehensive checklist to ensure your move goes smoothly without any surprises.</p>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-card">
+<div class="blog-image">⚡</div>
+<div class="blog-content">
+<div class="blog-meta">
+<span class="blog-category">Money Saving</span>
+<span class="blog-date">📅 Jan 10, 2026</span>
+</div>
+<h3>Reducing Your Utility Bills: Smart Tips</h3>
+<p class="blog-excerpt">Practical ways to cut down on electricity, water, and gas expenses in your rental.</p>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-card">
+<div class="blog-image">🔍</div>
+<div class="blog-content">
+<div class="blog-meta">
+<span class="blog-category">Renting Tips</span>
+<span class="blog-date">📅 Jan 8, 2026</span>
+</div>
+<h3>Questions to Ask Before Signing a Lease</h3>
+<p class="blog-excerpt">Important questions that will help you make an informed decision before committing to a rental.</p>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-card">
+<div class="blog-image">🛠️</div>
+<div class="blog-content">
+<div class="blog-meta">
+<span class="blog-category">Legal Advice</span>
+<span class="blog-date">📅 Jan 5, 2026</span>
+</div>
+<h3>Your Rights When Repairs Are Needed</h3>
+<p class="blog-excerpt">Know your legal rights as a tenant when it comes to repairs and maintenance issues.</p>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-card">
+<div class="blog-image">📱</div>
+<div class="blog-content">
+<div class="blog-meta">
+<span class="blog-category">Renting Tips</span>
+<span class="blog-date">📅 Jan 3, 2026</span>
+</div>
+<h3>Best Apps for Finding Rentals in Nigeria</h3>
+<p class="blog-excerpt">Top mobile apps and websites to help you find your next apartment quickly and safely.</p>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+<article class="blog-card">
+<div class="blog-image">🏦</div>
+<div class="blog-content">
+<div class="blog-meta">
+<span class="blog-category">Money Saving</span>
+<span class="blog-date">📅 Dec 30, 2025</span>
+</div>
+<h3>Understanding Agent and Legal Fees</h3>
+<p class="blog-excerpt">Breaking down the common fees you'll encounter and how to budget for them properly.</p>
+<a href="#" class="read-more">Read More →</a>
+</div>
+</article>
+
+</div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<p>© 2026 TenantToolsHub</p>
+</footer>
+
+</div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+
+function toggleSidebar(){
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const toggleBtn = document.getElementById('toggleBtn');
+    
+    sidebar.classList.toggle('collapsed');
+    mainContent.classList.toggle('expanded');
+    toggleBtn.classList.toggle('collapsed');
+    
+    // Change icon
+    if(sidebar.classList.contains('collapsed')){
+        toggleBtn.innerHTML = '☰';
+    } else {
+        toggleBtn.innerHTML = '✕';
+    }
+}
+
+// Category filter functionality
+document.querySelectorAll('.category-filter button').forEach(button => {
+    button.addEventListener('click', function(){
+        document.querySelectorAll('.category-filter button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        this.classList.add('active');
+    });
+});
+
+</script>
+
+</body>
+</html>

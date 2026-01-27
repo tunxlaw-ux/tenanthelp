@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rent Guides – TenantToolsHub</title>
+
+<style>
+
+/* --------------------
+GLOBAL
+-------------------- */
+
+body{
+    margin:0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:linear-gradient(135deg, #f5f7fa 0%, #e8ecf4 100%);
+    color:#222;
+}
+
+.main-layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.container{
+    width:90%;
+    max-width:1000px;
+    margin:auto;
+}
+
+section{
+    padding:70px 0;
+    position:relative;
+}
+
+h1,h2,h3{
+    margin-bottom:15px;
+}
+
+h2{
+    color:#1a1a1a;
+    font-size:32px;
+    font-weight:700;
+}
+
+p{
+    line-height:1.6;
+}
+
+/* --------------------
+SIDEBAR
+-------------------- */
+
+.sidebar{
+    width:250px;
+    background:linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
+    border-right:2px solid #e0e6f0;
+    padding:30px 20px;
+    position:fixed;
+    height:100vh;
+    overflow-y:auto;
+    transition:transform 0.3s ease;
+    z-index:1000;
+    box-shadow:4px 0 15px rgba(0,0,0,0.05);
+}
+
+.sidebar.collapsed{
+    transform:translateX(-250px);
+}
+
+.sidebar h3{
+    color:#2b59ff;
+    font-size:18px;
+    margin-bottom:20px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.sidebar ul li{
+    margin-bottom:8px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:#444;
+    font-size:14px;
+    display:block;
+    padding:12px 15px;
+    border-radius:8px;
+    transition:all 0.3s ease;
+    font-weight:500;
+    border-left:3px solid transparent;
+}
+
+.sidebar ul li a:hover{
+    background:linear-gradient(90deg, #f0f4ff 0%, #e8eeff 100%);
+    color:#2b59ff;
+    border-left-color:#2b59ff;
+    transform:translateX(5px);
+    box-shadow:0 2px 8px rgba(43, 89, 255, 0.1);
+}
+
+.sidebar ul li a.active{
+    background:linear-gradient(90deg, #f0f4ff 0%, #e8eeff 100%);
+    color:#2b59ff;
+    border-left-color:#2b59ff;
+    font-weight:700;
+}
+
+.toggle-btn{
+    position:fixed;
+    left:250px;
+    top:20px;
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    color:white;
+    border:none;
+    padding:12px 18px;
+    cursor:pointer;
+    border-radius:0 8px 8px 0;
+    z-index:1001;
+    transition:all 0.3s ease;
+    font-size:20px;
+    box-shadow:2px 2px 10px rgba(43, 89, 255, 0.3);
+}
+
+.toggle-btn:hover{
+    background:linear-gradient(135deg, #1a47ff 0%, #4a6aff 100%);
+    box-shadow:2px 2px 15px rgba(43, 89, 255, 0.5);
+    transform:scale(1.05);
+}
+
+.toggle-btn.collapsed{
+    left:0;
+}
+
+/* --------------------
+MAIN CONTENT
+-------------------- */
+
+.main-content{
+    margin-left:250px;
+    flex:1;
+    transition:margin-left 0.3s ease;
+}
+
+.main-content.expanded{
+    margin-left:0;
+}
+
+/* --------------------
+HEADER
+-------------------- */
+
+header{
+    background:linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+    padding:20px 0;
+    border-bottom:2px solid #e0e6f0;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    position:relative;
+    z-index:100;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:800;
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    letter-spacing:-0.5px;
+}
+
+/* --------------------
+PAGE HEADER
+-------------------- */
+
+.page-header{
+    background:linear-gradient(135deg,#2b59ff 0%,#6b86ff 50%, #8f9fff 100%);
+    color:white;
+    text-align:center;
+    padding:80px 20px;
+    position:relative;
+    overflow:hidden;
+}
+
+.page-header::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation:pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse{
+    0%, 100%{
+        transform:scale(1) rotate(0deg);
+    }
+    50%{
+        transform:scale(1.1) rotate(5deg);
+    }
+}
+
+.page-header h1{
+    font-size:44px;
+    font-weight:800;
+    position:relative;
+    z-index:1;
+    text-shadow:2px 2px 20px rgba(0,0,0,0.2);
+    margin:0;
+}
+
+.page-header p{
+    font-size:18px;
+    position:relative;
+    z-index:1;
+    opacity:0.95;
+    margin:15px 0 0 0;
+}
+
+/* --------------------
+FAQ SECTION
+-------------------- */
+
+.faq-section{
+    background:linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
+}
+
+.faq-intro{
+    text-align:center;
+    max-width:700px;
+    margin:0 auto 50px auto;
+}
+
+.faq-intro h2{
+    color:#1a1a1a;
+    margin-bottom:15px;
+}
+
+.faq-intro p{
+    color:#666;
+    font-size:16px;
+}
+
+/* FAQ Category */
+.faq-category{
+    margin-bottom:40px;
+}
+
+.category-title{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:20px 25px;
+    background:linear-gradient(135deg, #2b59ff 0%, #6b86ff 100%);
+    color:white;
+    border-radius:12px;
+    margin-bottom:20px;
+    box-shadow:0 4px 15px rgba(43, 89, 255, 0.3);
+}
+
+.category-title-icon{
+    font-size:32px;
+}
+
+.category-title h3{
+    margin:0;
+    font-size:22px;
+    font-weight:700;
+}
+
+/* FAQ Item (Accordion) */
+.faq-item{
+    background:linear-gradient(145deg, #ffffff 0%, #f8f9fc 100%);
+    border-radius:10px;
+    margin-bottom:15px;
+    border:2px solid #e8ecf4;
+    overflow:hidden;
+    transition:all 0.3s ease;
+}
+
+.faq-item:hover{
+    border-color:#2b59ff;
+    box-shadow:0 4px 15px rgba(43, 89, 255, 0.1);
+}
+
+.faq-question{
+    padding:20px 25px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:all 0.3s ease;
+    user-select:none;
+}
+
+.faq-question:hover{
+    background:linear-gradient(90deg, #f0f4ff 0%, #ffffff 100%);
+}
+
+.faq-question h4{
+    margin:0;
+    font-size:17px;
+    color:#1a1a1a;
+    font-weight:600;
+    line-height:1.4;
+    flex:1;
+    padding-right:20px;
+}
+
+.faq-icon{
+    font-size:24px;
+    color:#2b59ff;
+    transition:transform 0.3s ease;
+    flex-shrink:0;
+}
+
+.faq-item.active .faq-icon{
+    transform:rotate(180deg);
+}
+
+.faq-answer{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.4s ease, padding 0.4s ease;
+    padding:0 25px;
+}
+
+.faq-item.active .faq-answer{
+    max-height:2000px;
+    padding:0 25px 25px 25px;
+}
+
+.faq-answer-content{
+    padding-top:10px;
+    border-top:1px solid #e8ecf4;
+}
+
+.faq-answer p{
+    margin:15px 0;
+    color:#444;
+    line-height:1.7;
+}
+
+.faq-answer ul{
+    margin:15px 0;
+    padding-left:25px;
+    color:#444;
+}
+
+.faq-answer li{
+    margin:10px 0;
+    line-height:1.6;
+}
+
+.faq-answer strong{
+    color:#2b59ff;
+}
+
+.tip-box{
+    background:linear-gradient(135deg, #fff9e6 0%, #fff5d6 100%);
+    border-left:4px solid #ffb020;
+    padding:15px 20px;
+    border-radius:8px;
+    margin:15px 0;
+}
+
+.tip-box::before{
+    content:'💡 Tip: ';
+    font-weight:700;
+    color:#ff8800;
+}
+
+.warning-box{
+    background:linear-gradient(135deg, #ffe6e6 0%, #ffd6d6 100%);
+    border-left:4px solid #ff4444;
+    padding:15px 20px;
+    border-radius:8px;
+    margin:15px 0;
+}
+
+.warning-box::before{
+    content:'⚠️ Warning: ';
+    font-weight:700;
+    color:#cc0000;
+}
+
+/* --------------------
+FOOTER
+-------------------- */
+
+footer{
+    background:linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color:white;
+    text-align:center;
+    padding:40px;
+    position:relative;
+    overflow:hidden;
+}
+
+footer::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle, rgba(43, 89, 255, 0.1) 0%, transparent 70%);
+}
+
+footer p{
+    position:relative;
+    z-index:1;
+    font-size:15px;
+    margin:0;
+}
+
+/* --------------------
+RESPONSIVE
+-------------------- */
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-250px);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .toggle-btn {
+        left: 0;
+    }
+    
+    .page-header h1{
+        font-size:32px;
+    }
+    
+    .category-title{
+        padding:15px 20px;
+    }
+    
+    .category-title h3{
+        font-size:18px;
+    }
+    
+    .faq-question{
+        padding:15px 20px;
+    }
+    
+    .faq-question h4{
+        font-size:15px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="main-layout">
+
+<!-- TOGGLE BUTTON -->
+<button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">☰</button>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+<h3>Navigation</h3>
+<ul>
+<li><a href="#Index.html">HOMEPAGE GOALS</a></li>
+<li><a href="#hero">HERO SECTION (Top of Page)</a></li>
+<li><a href="FeaturedCalculators.html">FEATURED CALCULATORS</a></li>
+<li><a href="RentGuideSection.html">RENT GUIDES SECTION</a></li>
+<li><a href="MovingAndUtilities.html">MOVING & UTILITIES SECTION</a></li>
+<li><a href="#pdfs">FREE PDFS</a></li>
+<li><a href="LatestArticles.html">LATEST ARTICLES</a></li>
+</ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content" id="mainContent">
+
+<!-- HEADER -->
+<header>
+<div class="container">
+<div class="logo">TenantToolsHub</div>
+</div>
+</header>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+<h1>🏠 Renting in Nigeria</h1>
+<p>Frequently Asked Questions</p>
+</section>
+
+<!-- FAQ SECTION -->
+<section class="faq-section">
+<div class="container">
+
+<div class="faq-intro">
+<h2>Your Complete Guide to Renting</h2>
+<p>Everything you need to know about renting in Nigeria. Click on any question to see the answer.</p>
+</div>
+
+<!-- Category 1: General & Financials -->
+<div class="faq-category">
+<div class="category-title">
+<span class="category-title-icon">💰</span>
+<h3>General & Financials</h3>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+<h4>What are the "extra fees" I need to pay besides the rent?</h4>
+<span class="faq-icon">▼</span>
+</div>
+<div class="faq-answer">
+<div class="faq-answer-content">
+<p>In Nigeria, especially in cities like Lagos, Abuja, and Port Harcourt, you will likely encounter these additional costs:</p>
+<ul>
+<li><strong>Legal/Agreement Fee:</strong> Usually 10% of the rent.</li>
+<li><strong>Agency Commission:</strong> Usually 10% of the rent.</li>
+<li><strong>Caution Fee (Security Deposit):</strong> A refundable fee for potential damages, typically 10–20% of the rent.</li>
+<li><strong>Service Charge:</strong> Monthly or annual fees for security, waste management, and compound maintenance (common in gated estates).</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+<h4>Can a landlord demand 2 years of rent in advance?</h4>
+<span class="faq-icon">▼</span>
+</div>
+<div class="faq-answer">
+<div class="faq-answer-content">
+<p>It depends on the state. Under the <strong>Lagos State Tenancy Law 2011</strong>, it is technically illegal for a landlord to demand more than one year's rent from a new tenant (or more than 6 months from a sitting tenant). However, in many other states, 2-year upfront payments remain a common market practice.</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Category 2: Legal Rights & Documentation -->
+<div class="faq-category">
+<div class="category-title">
+<span class="category-title-icon">📋</span>
+<h3>Legal Rights & Documentation</h3>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+<h4>Am I entitled to a written tenancy agreement?</h4>
+<span class="faq-icon">▼</span>
+</div>
+<div class="faq-answer">
+<div class="faq-answer-content">
+<p>Yes. You have a right to a written agreement for any tenancy exceeding six months. Never rely on "gentleman's agreements" or verbal promises. A written contract protects you from sudden evictions or arbitrary rule changes.</p>
+</div>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+<h4>What must be included in my rent receipt?</h4>
+<span class="faq-icon">▼</span>
+</div>
+<div class="faq-answer">
+<div class="faq-answer-content">
+<p>By law, a valid receipt must include:</p>
+<ul>
+<li>The name of the landlord and tenant.</li>
+<li>The date of payment.</li>
+<li>The specific amount paid.</li>
+<li>The exact duration the payment covers (e.g., Jan 2026 – Dec 2026).</li>
+<li>The address of the property.</li>
+<li>The landlord's (or agent's) signature.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+<h4>Can my landlord enter my apartment whenever they want?</h4>
+<span class="faq-icon">▼</span>
+</div>
+<div class="faq-answer">
+<div class="faq-answer-content">
+<p>No. You have the <strong>Right to Quiet and Peaceable Enjoyment</strong>. While the landlord owns the property, they must give you "reasonable notice" before entering for inspections or repairs, except in emergencies (like a fire or flooding).</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Category 3: Repairs & Maintenance -->
+<div class="faq-category">
+<div class="category-title">
+<span class="category-title-icon">🔧</span>
+<h3>Repairs & Maintenance</h3>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+<h4>Who is responsible for repairs: me or the landlord?</h4>
+<span class="faq-icon">▼</span>
+</div>
+<div class="faq-answer">
+<div class="faq-answer-content">
+<p>Generally:</p>
+<ul>
+<li><strong>Landlord:</strong> Responsible for structural repairs (leaking roofs, cracked walls, external plumbing, and major electrical faults).</li>
+<li><strong>Tenant:</strong> Responsible for minor, day-to-day wear and tear (broken light bulbs, interior painting, or damage caused by negligence).</li>
+</ul>
+<div class="tip-box">
+Always document the state of the apartment with photos/videos <strong>before</strong> you move in to ensure your caution fee is returned fairly.
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Category 4: Eviction & Rent Increases -->
+<div class="faq-category">
+<div class="category-title">
+<span class="category-title-icon">📈</span>
+<h3>Eviction & Rent Increases</h3>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+<h4>Can a landlord increase my rent at any time?</h4>
+<span class="faq-icon">▼</span>
+</div>
+<div class="faq-answer">
+<div class="faq-answer-content">
+<p>No. A landlord cannot increase rent during an existing tenancy period. Any increase must be "reasonable" and usually requires a formal notice period (often 6 months in Lagos) before the current lease expires.</p>
+</div>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+<h4>How much notice must I receive before I am evicted?</h4>
+<span class="faq-icon">▼</span>
+</div>
+<div class="faq-answer">
+<div class="faq-answer-content">
+<p>Except where stated otherwise in your agreement, the standard legal notice periods are:</p>
+<ul>
+<li><strong>Weekly Tenant:</strong> 1 week notice.</li>
+<li><strong>Monthly Tenant:</strong> 1 month notice.</li>
+<li><strong>Quarterly/Half-yearly Tenant:</strong> 3 months notice.</li>
+<li><strong>Yearly Tenant:</strong> 6 months notice.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+<h4>Is it legal for a landlord to "lock me out" or remove my roof?</h4>
+<span class="faq-icon">▼</span>
+</div>
+<div class="faq-answer">
+<div class="faq-answer-content">
+<div class="warning-box">
+<strong>Absolutely not.</strong> Self-help eviction (removing doors, cutting off water/light, or physical harassment) is a criminal offense in Nigeria. A landlord must obtain a court order to legally recover possession of a property.
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Category 5: Safety & Scams -->
+<div class="faq-category">
+<div class="category-title">
+<span class="category-title-icon">🔒</span>
+<h3>Safety & Scams</h3>
+</div>
+
+<div class="faq-item">
+<div class="faq-question" onclick="toggleFaq(this)">
+<h4>How do I avoid "fake landlord" or agent scams?</h4>
+<span class="faq-icon">▼</span>
+</div>
+<div class="faq-answer">
+<div class="faq-answer-content">
+<ol>
+<li><strong>Verify Ownership:</strong> Ask for the landlord's title documents (C of O) or previous utility bills in their name.</li>
+<li><strong>Physical Inspection:</strong> Never pay for a house you haven't entered and inspected personally.</li>
+<li><strong>Traceable Payments:</strong> Avoid cash. Always pay via bank transfer to a verifiable account (preferably the landlord's account directly).</li>
+<li><strong>The "Too Good to be True" Rule:</strong> If a luxury flat in Lekki Phase 1 is priced like a room in Ikorodu, it is likely a scam.</li>
+</ol>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<p>© 2026 TenantToolsHub</p>
+</footer>
+
+</div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+
+function toggleSidebar(){
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const toggleBtn = document.getElementById('toggleBtn');
+    
+    sidebar.classList.toggle('collapsed');
+    mainContent.classList.toggle('expanded');
+    toggleBtn.classList.toggle('collapsed');
+    
+    // Change icon
+    if(sidebar.classList.contains('collapsed')){
+        toggleBtn.innerHTML = '☰';
+    } else {
+        toggleBtn.innerHTML = '✕';
+    }
+}
+
+// FAQ Accordion Toggle
+function toggleFaq(element){
+    const faqItem = element.parentElement;
+    const wasActive = faqItem.classList.contains('active');
+    
+    // Optional: Close other items (uncomment next 3 lines for accordion behavior)
+    // document.querySelectorAll('.faq-item').forEach(item => {
+    //     item.classList.remove('active');
+    // });
+    
+    if(wasActive){
+        faqItem.classList.remove('active');
+    } else {
+        faqItem.classList.add('active');
+    }
+}
+
+</script>
+
+</body>
+</html>

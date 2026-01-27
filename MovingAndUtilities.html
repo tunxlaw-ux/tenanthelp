@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Moving & Utilities – TenantToolsHub</title>
+
+<style>
+
+/* --------------------
+GLOBAL
+-------------------- */
+
+body{
+    margin:0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:linear-gradient(135deg, #f5f7fa 0%, #e8ecf4 100%);
+    color:#222;
+}
+
+.main-layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+}
+
+section{
+    padding:70px 0;
+    position:relative;
+}
+
+h1,h2,h3{
+    margin-bottom:15px;
+}
+
+h2{
+    color:#1a1a1a;
+    font-size:32px;
+    font-weight:700;
+}
+
+p{
+    line-height:1.6;
+}
+
+/* --------------------
+SIDEBAR
+-------------------- */
+
+.sidebar{
+    width:250px;
+    background:linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
+    border-right:2px solid #e0e6f0;
+    padding:30px 20px;
+    position:fixed;
+    height:100vh;
+    overflow-y:auto;
+    transition:transform 0.3s ease;
+    z-index:1000;
+    box-shadow:4px 0 15px rgba(0,0,0,0.05);
+}
+
+.sidebar.collapsed{
+    transform:translateX(-250px);
+}
+
+.sidebar h3{
+    color:#2b59ff;
+    font-size:18px;
+    margin-bottom:20px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.sidebar ul li{
+    margin-bottom:8px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:#444;
+    font-size:14px;
+    display:block;
+    padding:12px 15px;
+    border-radius:8px;
+    transition:all 0.3s ease;
+    font-weight:500;
+    border-left:3px solid transparent;
+}
+
+.sidebar ul li a:hover{
+    background:linear-gradient(90deg, #f0f4ff 0%, #e8eeff 100%);
+    color:#2b59ff;
+    border-left-color:#2b59ff;
+    transform:translateX(5px);
+    box-shadow:0 2px 8px rgba(43, 89, 255, 0.1);
+}
+
+.sidebar ul li a.active{
+    background:linear-gradient(90deg, #f0f4ff 0%, #e8eeff 100%);
+    color:#2b59ff;
+    border-left-color:#2b59ff;
+    font-weight:700;
+}
+
+.toggle-btn{
+    position:fixed;
+    left:250px;
+    top:20px;
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    color:white;
+    border:none;
+    padding:12px 18px;
+    cursor:pointer;
+    border-radius:0 8px 8px 0;
+    z-index:1001;
+    transition:all 0.3s ease;
+    font-size:20px;
+    box-shadow:2px 2px 10px rgba(43, 89, 255, 0.3);
+}
+
+.toggle-btn:hover{
+    background:linear-gradient(135deg, #1a47ff 0%, #4a6aff 100%);
+    box-shadow:2px 2px 15px rgba(43, 89, 255, 0.5);
+    transform:scale(1.05);
+}
+
+.toggle-btn.collapsed{
+    left:0;
+}
+
+/* --------------------
+MAIN CONTENT
+-------------------- */
+
+.main-content{
+    margin-left:250px;
+    flex:1;
+    transition:margin-left 0.3s ease;
+}
+
+.main-content.expanded{
+    margin-left:0;
+}
+
+/* --------------------
+HEADER
+-------------------- */
+
+header{
+    background:linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+    padding:20px 0;
+    border-bottom:2px solid #e0e6f0;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    position:relative;
+    z-index:100;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:800;
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    letter-spacing:-0.5px;
+}
+
+/* --------------------
+PAGE HEADER
+-------------------- */
+
+.page-header{
+    background:linear-gradient(135deg,#2b59ff 0%,#6b86ff 50%, #8f9fff 100%);
+    color:white;
+    text-align:center;
+    padding:80px 20px;
+    position:relative;
+    overflow:hidden;
+}
+
+.page-header::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation:pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse{
+    0%, 100%{
+        transform:scale(1) rotate(0deg);
+    }
+    50%{
+        transform:scale(1.1) rotate(5deg);
+    }
+}
+
+.page-header h1{
+    font-size:44px;
+    font-weight:800;
+    position:relative;
+    z-index:1;
+    text-shadow:2px 2px 20px rgba(0,0,0,0.2);
+    margin:0;
+}
+
+.page-header p{
+    font-size:18px;
+    position:relative;
+    z-index:1;
+    opacity:0.95;
+    margin:15px 0 0 0;
+}
+
+/* --------------------
+SPLIT SECTION
+-------------------- */
+
+.split-section{
+    background:linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
+}
+
+.split-container{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+}
+
+/* Section Column */
+.section-column{
+    position:relative;
+}
+
+.section-column::after{
+    content:'';
+    position:absolute;
+    right:-20px;
+    top:0;
+    bottom:0;
+    width:2px;
+    background:linear-gradient(180deg, transparent 0%, #e0e6f0 20%, #e0e6f0 80%, transparent 100%);
+}
+
+.section-column:last-child::after{
+    display:none;
+}
+
+/* Section Header */
+.section-header{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.section-icon{
+    font-size:60px;
+    margin-bottom:15px;
+    display:block;
+}
+
+.section-header h2{
+    margin:0 0 10px 0;
+    font-size:32px;
+}
+
+.section-header p{
+    color:#666;
+    font-size:15px;
+    margin:0;
+}
+
+/* Resource Grid */
+.resource-grid{
+    display:grid;
+    gap:20px;
+}
+
+/* Resource Card */
+.resource-card{
+    background:linear-gradient(145deg, #ffffff 0%, #f8f9fc 100%);
+    border-radius:12px;
+    padding:25px;
+    border:2px solid #e8ecf4;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+}
+
+.resource-card::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    width:4px;
+    height:100%;
+    background:linear-gradient(180deg, #2b59ff 0%, #6b86ff 100%);
+    transform:scaleY(0);
+    transition:transform 0.3s ease;
+}
+
+.resource-card:hover::before{
+    transform:scaleY(1);
+}
+
+.resource-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 12px 35px rgba(43, 89, 255, 0.2);
+    border-color:#2b59ff;
+}
+
+.resource-header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.resource-icon{
+    font-size:32px;
+    flex-shrink:0;
+}
+
+.resource-header h3{
+    margin:0;
+    font-size:20px;
+    color:#1a1a1a;
+    font-weight:700;
+}
+
+.resource-description{
+    color:#666;
+    font-size:15px;
+    margin:0 0 15px 0;
+    line-height:1.6;
+}
+
+.resource-badge{
+    display:inline-block;
+    padding:6px 12px;
+    background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    color:#2b59ff;
+    border-radius:12px;
+    font-size:12px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin-right:8px;
+}
+
+.calculator-badge{
+    background:linear-gradient(135deg, #e0fff4 0%, #ccfff0 100%);
+    color:#00b377;
+}
+
+.guide-badge{
+    background:linear-gradient(135deg, #ffeee0 0%, #ffe0cc 100%);
+    color:#ff6b35;
+}
+
+.info-badge{
+    background:linear-gradient(135deg, #fff9e6 0%, #fff5d6 100%);
+    color:#ffb020;
+}
+
+/* Quick Stats */
+.quick-stats{
+    margin-top:40px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+}
+
+.stat-card{
+    background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+    border-left:4px solid #2b59ff;
+}
+
+.stat-number{
+    font-size:28px;
+    font-weight:800;
+    color:#2b59ff;
+    margin:0 0 5px 0;
+}
+
+.stat-label{
+    font-size:13px;
+    color:#666;
+    margin:0;
+    font-weight:600;
+}
+
+/* --------------------
+FOOTER
+-------------------- */
+
+footer{
+    background:linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color:white;
+    text-align:center;
+    padding:40px;
+    position:relative;
+    overflow:hidden;
+}
+
+footer::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:radial-gradient(circle, rgba(43, 89, 255, 0.1) 0%, transparent 70%);
+}
+
+footer p{
+    position:relative;
+    z-index:1;
+    font-size:15px;
+    margin:0;
+}
+
+/* --------------------
+RESPONSIVE
+-------------------- */
+
+@media (max-width: 968px) {
+    .split-container{
+        grid-template-columns:1fr;
+        gap:60px;
+    }
+    
+    .section-column::after{
+        display:none;
+    }
+    
+    .quick-stats{
+        grid-template-columns:1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-250px);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .toggle-btn {
+        left: 0;
+    }
+    
+    .page-header h1{
+        font-size:32px;
+    }
+    
+    .section-icon{
+        font-size:48px;
+    }
+    
+    .section-header h2{
+        font-size:26px;
+    }
+}
+
+/* --------------------
+MODAL / POPUP
+-------------------- */
+
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(5px);
+    z-index:2000;
+    animation:fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+    }
+    to{
+        opacity:1;
+    }
+}
+
+.modal.active{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-content{
+    background:linear-gradient(145deg, #ffffff 0%, #f8f9fc 100%);
+    border-radius:16px;
+    max-width:900px;
+    width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+    position:relative;
+    animation:slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideUp{
+    from{
+        opacity:0;
+        transform:translateY(50px) scale(0.9);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+.modal-header{
+    background:linear-gradient(135deg, #2b59ff 0%, #6b86ff 100%);
+    color:white;
+    padding:30px;
+    border-radius:16px 16px 0 0;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.modal-header h2{
+    margin:0;
+    font-size:28px;
+    color:white;
+}
+
+.modal-header p{
+    margin:8px 0 0 0;
+    opacity:0.95;
+    font-size:15px;
+}
+
+.close-modal{
+    position:absolute;
+    top:20px;
+    right:20px;
+    background:rgba(255,255,255,0.2);
+    border:none;
+    color:white;
+    font-size:24px;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    cursor:pointer;
+    transition:all 0.3s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.close-modal:hover{
+    background:rgba(255,255,255,0.3);
+    transform:rotate(90deg);
+}
+
+.modal-body{
+    padding:35px;
+}
+
+/* Checklist Timeline */
+.checklist-timeline{
+    position:relative;
+}
+
+.timeline-item{
+    margin-bottom:35px;
+    position:relative;
+}
+
+.timeline-header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+    padding:15px 20px;
+    background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    border-radius:10px;
+    border-left:4px solid #2b59ff;
+}
+
+.timeline-icon{
+    font-size:28px;
+}
+
+.timeline-header h3{
+    margin:0;
+    color:#2b59ff;
+    font-size:20px;
+}
+
+/* Checklist Section */
+.checklist-section{
+    margin-bottom:25px;
+    padding:20px;
+    background:white;
+    border-radius:8px;
+    border:1px solid #e8ecf4;
+}
+
+.checklist-section h4{
+    margin:0 0 15px 0;
+    color:#1a1a1a;
+    font-size:17px;
+    font-weight:700;
+}
+
+.checklist-section p{
+    margin:10px 0;
+    color:#666;
+    font-size:14px;
+}
+
+.checklist-items{
+    list-style:none;
+    padding:0;
+    margin:10px 0;
+}
+
+.checklist-items li{
+    padding:10px 0;
+    padding-left:35px;
+    position:relative;
+    color:#444;
+    line-height:1.6;
+    transition:all 0.3s ease;
+    cursor:pointer;
+}
+
+.checklist-items li:hover{
+    color:#2b59ff;
+}
+
+.checklist-items li::before{
+    content:'☐';
+    position:absolute;
+    left:0;
+    font-size:20px;
+    color:#2b59ff;
+    transition:all 0.3s ease;
+}
+
+.checklist-items li.checked::before{
+    content:'✓';
+    color:#00b377;
+}
+
+.checklist-items li.checked{
+    text-decoration:line-through;
+    opacity:0.6;
+}
+
+/* Options List */
+.options-list{
+    background:linear-gradient(135deg, #fff9e6 0%, #fff5d6 100%);
+    padding:15px 20px;
+    border-radius:8px;
+    margin:10px 0;
+    border-left:4px solid #ffb020;
+}
+
+.options-list p{
+    margin:5px 0;
+    font-weight:600;
+    color:#ff8800;
+    font-size:13px;
+    text-transform:uppercase;
+}
+
+.options-list ul{
+    margin:10px 0 5px 0;
+    padding-left:20px;
+}
+
+.options-list li{
+    color:#666;
+    margin:5px 0;
+}
+
+/* Important Tips Box */
+.important-tips{
+    background:linear-gradient(135deg, #ffe6e6 0%, #ffd6d6 100%);
+    padding:20px 25px;
+    border-radius:10px;
+    border-left:4px solid #ff4444;
+    margin-top:30px;
+}
+
+.important-tips h4{
+    margin:0 0 15px 0;
+    color:#cc0000;
+    font-size:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.important-tips ul{
+    margin:10px 0;
+    padding-left:20px;
+}
+
+.important-tips li{
+    color:#666;
+    margin:10px 0;
+    line-height:1.6;
+}
+
+/* Calculator Link */
+.calculator-link{
+    display:inline-block;
+    padding:10px 20px;
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:600;
+    font-size:14px;
+    margin:10px 0;
+    transition:all 0.3s ease;
+}
+
+.calculator-link:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 15px rgba(43, 89, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+    .modal-content{
+        max-width:100%;
+        margin:10px;
+    }
+    
+    .modal-header{
+        padding:25px 20px;
+    }
+    
+    .modal-body{
+        padding:25px 20px;
+    }
+    
+    .timeline-header h3{
+        font-size:18px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="main-layout">
+
+<!-- TOGGLE BUTTON -->
+<button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">☰</button>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+<h3>Navigation</h3>
+<ul>
+<li><a href="#Index.html">HOMEPAGE GOALS</a></li>
+<li><a href="#hero">HERO SECTION (Top of Page)</a></li>
+<li><a href="FeaturedCalculators.html">FEATURED CALCULATORS</a></li>
+<li><a href="RentGuideSection.html">RENT GUIDES SECTION</a></li>
+<li><a href="MovingAndUtilities.html">MOVING & UTILITIES SECTION</a></li>
+<li><a href="#pdfs">FREE PDFS</a></li>
+<li><a href="LatestArticles.html">LATEST ARTICLES</a></li>
+</ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content" id="mainContent">
+
+<!-- HEADER -->
+<header>
+<div class="container">
+<div class="logo">TenantToolsHub</div>
+</div>
+</header>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+<h1>Moving & Utilities</h1>
+<p>Everything you need for a smooth move and budget-friendly utilities</p>
+</section>
+
+<!-- SPLIT SECTION -->
+<section class="split-section">
+<div class="container">
+
+<div class="split-container">
+
+<!-- LEFT COLUMN: MOVING -->
+<div class="section-column">
+<div class="section-header">
+<span class="section-icon">🚚</span>
+<h2>Moving</h2>
+<p>Plan and budget your move with confidence</p>
+</div>
+
+<div class="resource-grid">
+
+<!-- Moving Cost Calculator -->
+<div class="resource-card" onclick="alert('Calculator coming soon!')">
+<div class="resource-header">
+<span class="resource-icon">💰</span>
+<h3>Moving Cost Calculator</h3>
+</div>
+<p class="resource-description">Estimate your total moving expenses including transport, packing materials, and labor costs.</p>
+<span class="resource-badge calculator-badge">Calculator</span>
+</div>
+
+<!-- Moving Checklist -->
+<div class="resource-card" onclick="openModal('checklistModal')">
+<div class="resource-header">
+<span class="resource-icon">✅</span>
+<h3>Moving Checklist</h3>
+</div>
+<p class="resource-description">Complete step-by-step checklist to ensure nothing gets forgotten during your move.</p>
+<span class="resource-badge guide-badge">Interactive Guide</span>
+</div>
+
+<!-- Packing Tips -->
+<div class="resource-card" onclick="alert('Guide coming soon!')">
+<div class="resource-header">
+<span class="resource-icon">📦</span>
+<h3>Packing Tips</h3>
+</div>
+<p class="resource-description">Expert tips on how to pack efficiently, protect fragile items, and organize your belongings.</p>
+<span class="resource-badge guide-badge">Guide</span>
+</div>
+
+</div>
+
+<!-- Quick Stats for Moving -->
+<div class="quick-stats">
+<div class="stat-card">
+<p class="stat-number">₦50K+</p>
+<p class="stat-label">Avg Moving Cost</p>
+</div>
+<div class="stat-card">
+<p class="stat-number">2-3</p>
+<p class="stat-label">Weeks to Plan</p>
+</div>
+<div class="stat-card">
+<p class="stat-number">15+</p>
+<p class="stat-label">Items to Track</p>
+</div>
+</div>
+
+</div>
+
+<!-- RIGHT COLUMN: UTILITIES -->
+<div class="section-column">
+<div class="section-header">
+<span class="section-icon">⚡</span>
+<h2>Utilities</h2>
+<p>Understand and manage your monthly utility costs</p>
+</div>
+
+<div class="resource-grid">
+
+<!-- Electricity Cost Calculator -->
+<div class="resource-card" onclick="alert('Calculator coming soon!')">
+<div class="resource-header">
+<span class="resource-icon">💡</span>
+<h3>Electricity Cost Calculator</h3>
+</div>
+<p class="resource-description">Calculate your expected monthly electricity bill based on your appliances and usage patterns.</p>
+<span class="resource-badge calculator-badge">Calculator</span>
+</div>
+
+<!-- Water Usage Calculator -->
+<div class="resource-card" onclick="alert('Calculator coming soon!')">
+<div class="resource-header">
+<span class="resource-icon">💧</span>
+<h3>Water Usage Calculator</h3>
+</div>
+<p class="resource-description">Estimate your water consumption and monthly water bills based on household size and usage.</p>
+<span class="resource-badge calculator-badge">Calculator</span>
+</div>
+
+<!-- Average Utility Bills -->
+<div class="resource-card" onclick="alert('Info coming soon!')">
+<div class="resource-header">
+<span class="resource-icon">📊</span>
+<h3>Average Utility Bills</h3>
+</div>
+<p class="resource-description">See typical utility costs across different Nigerian cities and apartment types for better budgeting.</p>
+<span class="resource-badge info-badge">Info Guide</span>
+</div>
+
+</div>
+
+<!-- Quick Stats for Utilities -->
+<div class="quick-stats">
+<div class="stat-card">
+<p class="stat-number">₦15K</p>
+<p class="stat-label">Avg Electricity</p>
+</div>
+<div class="stat-card">
+<p class="stat-number">₦8K</p>
+<p class="stat-label">Avg Water Bill</p>
+</div>
+<div class="stat-card">
+<p class="stat-number">30%</p>
+<p class="stat-label">Potential Savings</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<p>© 2026 TenantToolsHub</p>
+</footer>
+
+</div>
+</div>
+
+<!-- MODALS -->
+
+<!-- Moving Checklist Modal -->
+<div class="modal" id="checklistModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>✅ Complete Moving Checklist</h2>
+<p>Your step-by-step guide to a stress-free move</p>
+<button class="close-modal" onclick="closeModal('checklistModal')">×</button>
+</div>
+<div class="modal-body">
+
+<div class="checklist-timeline">
+
+<!-- 4 Weeks Before -->
+<div class="timeline-item">
+<div class="timeline-header">
+<span class="timeline-icon">📅</span>
+<h3>4 Weeks Before Moving</h3>
+</div>
+
+<div class="checklist-section">
+<h4>Confirm Your New Apartment</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Inspect the property thoroughly</li>
+<li onclick="toggleCheck(this)">Check water supply</li>
+<li onclick="toggleCheck(this)">Check electricity connection</li>
+<li onclick="toggleCheck(this)">Test doors, windows, and locks</li>
+<li onclick="toggleCheck(this)">Confirm parking (if applicable)</li>
+</ul>
+</div>
+
+<div class="checklist-section">
+<h4>Understand All Fees</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Rent amount</li>
+<li onclick="toggleCheck(this)">Agent fee</li>
+<li onclick="toggleCheck(this)">Legal fee</li>
+<li onclick="toggleCheck(this)">Agreement fee</li>
+<li onclick="toggleCheck(this)">Service charge (if any)</li>
+</ul>
+<a href="tenant-tools-hub.html" class="calculator-link">🧮 Use Total Rent Cost Calculator</a>
+</div>
+
+<div class="checklist-section">
+<h4>Gather Documents</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Government-issued ID</li>
+<li onclick="toggleCheck(this)">Passport photographs</li>
+<li onclick="toggleCheck(this)">Tenancy agreement draft</li>
+<li onclick="toggleCheck(this)">Payment receipts</li>
+</ul>
+</div>
+
+<div class="checklist-section">
+<h4>Create a Moving Budget</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Transport cost</li>
+<li onclick="toggleCheck(this)">Packing materials</li>
+<li onclick="toggleCheck(this)">Basic furnishings</li>
+<li onclick="toggleCheck(this)">Utility setup</li>
+</ul>
+</div>
+
+</div>
+
+<!-- 2-3 Weeks Before -->
+<div class="timeline-item">
+<div class="timeline-header">
+<span class="timeline-icon">📅</span>
+<h3>2–3 Weeks Before Moving</h3>
+</div>
+
+<div class="checklist-section">
+<h4>Declutter</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Sell unused items</li>
+<li onclick="toggleCheck(this)">Donate usable clothes</li>
+<li onclick="toggleCheck(this)">Dispose damaged items</li>
+</ul>
+</div>
+
+<div class="checklist-section">
+<h4>Arrange Movers</h4>
+<div class="options-list">
+<p>Options:</p>
+<ul>
+<li>Hire a moving company</li>
+<li>Rent a truck/van</li>
+<li>Ask friends or family</li>
+</ul>
+<p style="color:#666; margin-top:10px;">💡 Get at least 2 price quotes.</p>
+</div>
+</div>
+
+<div class="checklist-section">
+<h4>Notify Your Current Landlord</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Confirm move-out date</li>
+<li onclick="toggleCheck(this)">Ask about refund of caution deposit (if applicable)</li>
+</ul>
+</div>
+
+</div>
+
+<!-- 1 Week Before -->
+<div class="timeline-item">
+<div class="timeline-header">
+<span class="timeline-icon">📅</span>
+<h3>1 Week Before Moving</h3>
+</div>
+
+<div class="checklist-section">
+<h4>Pack by Category</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Clothes</li>
+<li onclick="toggleCheck(this)">Kitchen items</li>
+<li onclick="toggleCheck(this)">Electronics</li>
+<li onclick="toggleCheck(this)">Documents</li>
+</ul>
+<p>💡 Label all boxes clearly.</p>
+</div>
+
+<div class="checklist-section">
+<h4>Buy Packing Materials</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Cartons</li>
+<li onclick="toggleCheck(this)">Nylon bags</li>
+<li onclick="toggleCheck(this)">Tape</li>
+<li onclick="toggleCheck(this)">Bubble wrap</li>
+</ul>
+</div>
+
+<div class="checklist-section">
+<h4>Back Up Important Files</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Phone</li>
+<li onclick="toggleCheck(this)">Laptop</li>
+<li onclick="toggleCheck(this)">USB drive or cloud storage</li>
+</ul>
+</div>
+
+</div>
+
+<!-- 2-3 Days Before -->
+<div class="timeline-item">
+<div class="timeline-header">
+<span class="timeline-icon">📅</span>
+<h3>2–3 Days Before Moving</h3>
+</div>
+
+<div class="checklist-section">
+<h4>Confirm Movers</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Reconfirm time and price</li>
+<li onclick="toggleCheck(this)">Share directions</li>
+</ul>
+</div>
+
+<div class="checklist-section">
+<h4>Pack Essentials Bag</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Toiletries</li>
+<li onclick="toggleCheck(this)">Change of clothes</li>
+<li onclick="toggleCheck(this)">Phone charger</li>
+<li onclick="toggleCheck(this)">Snacks</li>
+<li onclick="toggleCheck(this)">Medication</li>
+</ul>
+</div>
+
+<div class="checklist-section">
+<h4>Withdraw Cash</h4>
+<p>Some movers or helpers may require cash payment.</p>
+</div>
+
+</div>
+
+<!-- Moving Day -->
+<div class="timeline-item">
+<div class="timeline-header">
+<span class="timeline-icon">🚚</span>
+<h3>Moving Day</h3>
+</div>
+
+<div class="checklist-section">
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Supervise loading</li>
+<li onclick="toggleCheck(this)">Count your items</li>
+<li onclick="toggleCheck(this)">Take photos of electronics</li>
+<li onclick="toggleCheck(this)">Lock old apartment</li>
+<li onclick="toggleCheck(this)">Collect keys to new apartment</li>
+</ul>
+</div>
+
+</div>
+
+<!-- After Moving In -->
+<div class="timeline-item">
+<div class="timeline-header">
+<span class="timeline-icon">🏠</span>
+<h3>After Moving In</h3>
+</div>
+
+<div class="checklist-section">
+<h4>Inspect Immediately</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Check for leaks</li>
+<li onclick="toggleCheck(this)">Test sockets</li>
+<li onclick="toggleCheck(this)">Check doors and locks</li>
+</ul>
+<p>⚠️ Report any issues immediately.</p>
+</div>
+
+<div class="checklist-section">
+<h4>Change Locks (Recommended)</h4>
+<p>For security reasons.</p>
+</div>
+
+<div class="checklist-section">
+<h4>Connect Utilities</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Electricity meter</li>
+<li onclick="toggleCheck(this)">Water supply</li>
+<li onclick="toggleCheck(this)">Internet (if needed)</li>
+</ul>
+</div>
+
+<div class="checklist-section">
+<h4>Clean Apartment</h4>
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Floors</li>
+<li onclick="toggleCheck(this)">Bathroom</li>
+<li onclick="toggleCheck(this)">Kitchen</li>
+</ul>
+</div>
+
+</div>
+
+<!-- First Week -->
+<div class="timeline-item">
+<div class="timeline-header">
+<span class="timeline-icon">✨</span>
+<h3>First Week After Moving</h3>
+</div>
+
+<div class="checklist-section">
+<ul class="checklist-items">
+<li onclick="toggleCheck(this)">Update address where necessary</li>
+<li onclick="toggleCheck(this)">Introduce yourself to neighbors</li>
+<li onclick="toggleCheck(this)">Arrange furniture</li>
+<li onclick="toggleCheck(this)">Set up waste disposal routine</li>
+</ul>
+</div>
+
+</div>
+
+</div>
+
+<!-- Important Tips -->
+<div class="important-tips">
+<h4>⚠️ Important Tips for Nigerian Tenants</h4>
+<ul>
+<li>Always collect receipts for every payment</li>
+<li>Avoid paying without seeing the apartment</li>
+<li>Verify agent authenticity</li>
+<li>Read tenancy agreement before signing</li>
+<li>Keep copies of all documents</li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+
+function toggleSidebar(){
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const toggleBtn = document.getElementById('toggleBtn');
+    
+    sidebar.classList.toggle('collapsed');
+    mainContent.classList.toggle('expanded');
+    toggleBtn.classList.toggle('collapsed');
+    
+    // Change icon
+    if(sidebar.classList.contains('collapsed')){
+        toggleBtn.innerHTML = '☰';
+    } else {
+        toggleBtn.innerHTML = '✕';
+    }
+}
+
+// Modal functions
+function openModal(modalId){
+    document.getElementById(modalId).classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal(modalId){
+    document.getElementById(modalId).classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal on outside click
+document.addEventListener('click', function(event){
+    if(event.target.classList.contains('modal')){
+        event.target.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(event){
+    if(event.key === 'Escape'){
+        document.querySelectorAll('.modal.active').forEach(modal => {
+            modal.classList.remove('active');
+        });
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// Toggle checklist item
+function toggleCheck(item){
+    item.classList.toggle('checked');
+}
+
+</script>
+
+</body>
+</html>
