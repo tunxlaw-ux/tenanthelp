@@ -811,19 +811,19 @@ MODAL / POPUP
 </div>
 </div>
 <div class="calculator-grid">
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('rentIncreaseModal')">
 <span class="card-icon">📈</span>
 <h3>Rent Increase Calculator</h3>
 <p>Calculate expected rent increases and plan ahead</p>
 <span class="calculator-badge">Essential</span>
 </div>
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('lateFeeModal')">
 <span class="card-icon">⏰</span>
 <h3>Late Fee Calculator</h3>
 <p>See how much late payment fees will cost you</p>
 <span class="calculator-badge">Essential</span>
 </div>
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('leaseBreakModal')">
 <span class="card-icon">🔓</span>
 <h3>Lease Break Penalty Calculator</h3>
 <p>Calculate the cost of breaking your lease early</p>
@@ -1188,6 +1188,296 @@ MODAL / POPUP
 • Use buckets instead of running taps<br>
 • Reuse water where possible<br>
 • Take shorter showers
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Rent Increase Calculator Modal -->
+<div class="modal" id="rentIncreaseModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>📈 Rent Increase Calculator</h2>
+<p>Calculate expected rent increases and plan ahead</p>
+<button class="close-modal" onclick="closeModal('rentIncreaseModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="rentIncreaseForm" onsubmit="calculateRentIncrease(event)">
+
+<div class="form-group">
+<label>Current Monthly Rent (₦)</label>
+<input type="text" id="riCurrentRent" placeholder="300,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Your current monthly rent amount</span>
+</div>
+
+<div class="form-group">
+<label>Rent Increase Type</label>
+<select id="riIncreaseType" onchange="toggleIncreaseInput()" required>
+<option value="percentage">Percentage Increase</option>
+<option value="fixed">Fixed Amount Increase</option>
+</select>
+</div>
+
+<div class="form-group" id="riPercentageGroup">
+<label>Increase Percentage (%)</label>
+<input type="number" id="riPercentage" min="0" max="100" step="0.1" value="10" placeholder="10">
+<span class="input-helper">Common range: 5-15% in Nigeria</span>
+</div>
+
+<div class="form-group" id="riFixedGroup" style="display:none;">
+<label>Fixed Increase Amount (₦)</label>
+<input type="text" id="riFixedAmount" placeholder="30,000" oninput="formatCurrency(this)">
+<span class="input-helper">Exact amount rent will increase by</span>
+</div>
+
+<div class="form-group">
+<label>Years to Project</label>
+<select id="riYears" required>
+<option value="1" selected>1 year</option>
+<option value="2">2 years</option>
+<option value="3">3 years</option>
+<option value="5">5 years</option>
+<option value="10">10 years</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Payment Frequency</label>
+<select id="riFrequency" required>
+<option value="12">Monthly</option>
+<option value="1" selected>Annually</option>
+<option value="2">Bi-annually</option>
+</select>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Rent Increase</button>
+
+<div class="result-box" id="rentIncreaseResult">
+<h3>Projected Rent Increases</h3>
+<div class="result-item">
+<span class="result-label">Current Monthly Rent:</span>
+<span class="result-value" id="riResultCurrent">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">New Monthly Rent:</span>
+<span class="result-value" id="riResultNew">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Monthly Increase:</span>
+<span class="result-value" id="riResultMonthlyIncrease">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Annual Increase:</span>
+<span class="result-value" id="riResultAnnualIncrease">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Payment Amount Due:</span>
+<span class="result-value" id="riResultPayment">₦0</span>
+</div>
+<div class="result-item" style="border:none; padding-top:20px; margin-top:20px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="riProjection" style="background:white; padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Late Fee Calculator Modal -->
+<div class="modal" id="lateFeeModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>⏰ Late Fee Calculator</h2>
+<p>Calculate late payment penalties</p>
+<button class="close-modal" onclick="closeModal('lateFeeModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="lateFeeForm" onsubmit="calculateLateFee(event)">
+
+<div class="form-group">
+<label>Rent Amount Due (₦)</label>
+<input type="text" id="lfRentDue" placeholder="300,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Amount you were supposed to pay</span>
+</div>
+
+<div class="form-group">
+<label>Late Fee Type</label>
+<select id="lfFeeType" onchange="toggleLateFeeInput()" required>
+<option value="percentage">Percentage of Rent</option>
+<option value="daily">Daily Rate</option>
+<option value="fixed">Fixed Amount</option>
+</select>
+</div>
+
+<div class="form-group" id="lfPercentageGroup">
+<label>Late Fee Percentage (%)</label>
+<input type="number" id="lfPercentage" min="0" max="50" step="0.1" value="5" placeholder="5">
+<span class="input-helper">Common: 5-10% of rent amount</span>
+</div>
+
+<div class="form-group" id="lfDailyGroup" style="display:none;">
+<label>Daily Late Fee (₦)</label>
+<input type="text" id="lfDailyRate" placeholder="1,000" oninput="formatCurrency(this)">
+<span class="input-helper">Fee charged per day late</span>
+</div>
+
+<div class="form-group" id="lfFixedGroup" style="display:none;">
+<label>Fixed Late Fee (₦)</label>
+<input type="text" id="lfFixedAmount" placeholder="10,000" oninput="formatCurrency(this)">
+<span class="input-helper">One-time late payment fee</span>
+</div>
+
+<div class="form-group" id="lfDaysGroup">
+<label>Days Late</label>
+<input type="number" id="lfDaysLate" min="1" value="7" required>
+<span class="input-helper">Number of days past due date</span>
+</div>
+
+<div class="form-group">
+<label>Maximum Late Fee Cap (₦) - Optional</label>
+<input type="text" id="lfMaxCap" placeholder="50,000" oninput="formatCurrency(this)">
+<span class="input-helper">Some agreements cap maximum late fees</span>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Late Fee</button>
+
+<div class="result-box" id="lateFeeResult">
+<h3>Late Fee Calculation</h3>
+<div class="result-item">
+<span class="result-label">Original Rent Due:</span>
+<span class="result-value" id="lfResultRent">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Days Late:</span>
+<span class="result-value" id="lfResultDays">0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Late Fee:</span>
+<span class="result-value" id="lfResultFee">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Amount Now Due:</span>
+<span class="result-value" id="lfResultTotal">₦0</span>
+</div>
+<div class="result-item" style="border:none; padding-top:20px; margin-top:20px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="lfAdvice" style="background:linear-gradient(135deg, #ffe6e6 0%, #ffd6d6 100%); padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#666; border-left:4px solid #ff4444;">
+<strong style="color:#cc0000;">⚠️ Important:</strong><br>
+Pay as soon as possible to avoid additional fees. Contact your landlord immediately if you're having difficulty making payment.
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Lease Break Penalty Calculator Modal -->
+<div class="modal" id="leaseBreakModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>🔓 Lease Break Penalty Calculator</h2>
+<p>Calculate the cost of breaking your lease early</p>
+<button class="close-modal" onclick="closeModal('leaseBreakModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="leaseBreakForm" onsubmit="calculateLeaseBreak(event)">
+
+<div class="form-group">
+<label>Monthly Rent (₦)</label>
+<input type="text" id="lbMonthlyRent" placeholder="300,000" oninput="formatCurrency(this)" required>
+</div>
+
+<div class="form-group">
+<label>Lease Term Length</label>
+<select id="lbLeaseTerm" required>
+<option value="12" selected>1 year</option>
+<option value="24">2 years</option>
+<option value="36">3 years</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Months Completed</label>
+<input type="number" id="lbMonthsCompleted" min="0" max="36" value="6" required>
+<span class="input-helper">How many months you've already stayed</span>
+</div>
+
+<div class="form-group">
+<label>Early Termination Fee Type</label>
+<select id="lbPenaltyType" onchange="toggleLeaseBreakInput()" required>
+<option value="months" selected>Number of Months' Rent</option>
+<option value="percentage">Percentage of Remaining Rent</option>
+<option value="forfeit">Forfeit Security Deposit</option>
+<option value="custom">Custom Amount</option>
+</select>
+</div>
+
+<div class="form-group" id="lbMonthsGroup">
+<label>Penalty (Months of Rent)</label>
+<input type="number" id="lbPenaltyMonths" min="0" max="12" value="2" step="0.5">
+<span class="input-helper">Common: 1-3 months' rent</span>
+</div>
+
+<div class="form-group" id="lbPercentageGroup" style="display:none;">
+<label>Penalty Percentage (%)</label>
+<input type="number" id="lbPenaltyPercentage" min="0" max="100" value="50">
+<span class="input-helper">Of remaining rent owed</span>
+</div>
+
+<div class="form-group" id="lbCustomGroup" style="display:none;">
+<label>Custom Penalty Amount (₦)</label>
+<input type="text" id="lbCustomAmount" placeholder="600,000" oninput="formatCurrency(this)">
+</div>
+
+<div class="form-group">
+<label>Security Deposit Amount (₦)</label>
+<input type="text" id="lbSecurityDeposit" placeholder="300,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Your refundable security deposit</span>
+</div>
+
+<div class="form-group">
+<label>Notice Period (Months)</label>
+<input type="number" id="lbNoticePeriod" min="0" max="6" value="1">
+<span class="input-helper">Rent due during notice period</span>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Break Penalty</button>
+
+<div class="result-box" id="leaseBreakResult">
+<h3>Lease Break Cost Analysis</h3>
+<div class="result-item">
+<span class="result-label">Months Remaining:</span>
+<span class="result-value" id="lbResultRemaining">0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Early Termination Fee:</span>
+<span class="result-value" id="lbResultPenalty">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Notice Period Rent:</span>
+<span class="result-value" id="lbResultNotice">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Security Deposit Forfeited:</span>
+<span class="result-value" id="lbResultDeposit">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Cost to Break Lease:</span>
+<span class="result-value" id="lbResultTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Potential Deposit Refund:</span>
+<span class="result-value" id="lbResultRefund">₦0</span>
+</div>
+<div class="result-item" style="border:none; padding-top:20px; margin-top:20px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="lbAdvice" style="background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
 </div>
 </div>
 </div>
@@ -3110,6 +3400,179 @@ function calculateFurnishedVsUnfurnished(event){
     document.getElementById('fvuAdvice').innerHTML = '<strong>Recommendation:</strong><br>' + advice;
     
     document.getElementById('furnishedVsUnfurnishedResult').classList.add('show');
+}
+
+// Toggle functions for dynamic form fields
+function toggleIncreaseInput(){
+    const type = document.getElementById('riIncreaseType').value;
+    document.getElementById('riPercentageGroup').style.display = type === 'percentage' ? 'block' : 'none';
+    document.getElementById('riFixedGroup').style.display = type === 'fixed' ? 'block' : 'none';
+}
+
+function toggleLateFeeInput(){
+    const type = document.getElementById('lfFeeType').value;
+    document.getElementById('lfPercentageGroup').style.display = type === 'percentage' ? 'block' : 'none';
+    document.getElementById('lfDailyGroup').style.display = type === 'daily' ? 'block' : 'none';
+    document.getElementById('lfFixedGroup').style.display = type === 'fixed' ? 'block' : 'none';
+    document.getElementById('lfDaysGroup').style.display = type === 'daily' ? 'block' : 'none';
+}
+
+function toggleLeaseBreakInput(){
+    const type = document.getElementById('lbPenaltyType').value;
+    document.getElementById('lbMonthsGroup').style.display = type === 'months' ? 'block' : 'none';
+    document.getElementById('lbPercentageGroup').style.display = type === 'percentage' ? 'block' : 'none';
+    document.getElementById('lbCustomGroup').style.display = type === 'custom' ? 'block' : 'none';
+}
+
+// Rent Increase Calculator
+function calculateRentIncrease(event){
+    event.preventDefault();
+    
+    const currentRent = getCurrencyValue('riCurrentRent');
+    const increaseType = document.getElementById('riIncreaseType').value;
+    const years = Number(document.getElementById('riYears').value);
+    const frequency = Number(document.getElementById('riFrequency').value);
+    
+    let newMonthlyRent;
+    if(increaseType === 'percentage'){
+        const percentage = Number(document.getElementById('riPercentage').value) / 100;
+        newMonthlyRent = currentRent * (1 + percentage);
+    } else {
+        const fixedAmount = getCurrencyValue('riFixedAmount');
+        newMonthlyRent = currentRent + fixedAmount;
+    }
+    
+    const monthlyIncrease = newMonthlyRent - currentRent;
+    const annualIncrease = monthlyIncrease * 12;
+    
+    // Calculate payment amount based on frequency
+    let paymentAmount;
+    if(frequency === 12){
+        paymentAmount = newMonthlyRent;
+    } else if(frequency === 2){
+        paymentAmount = newMonthlyRent * 6;
+    } else {
+        paymentAmount = newMonthlyRent * 12;
+    }
+    
+    // Create projection
+    let projection = '<strong>Multi-Year Projection:</strong><br>';
+    let projectedRent = currentRent;
+    for(let i = 1; i <= Math.min(years, 5); i++){
+        if(increaseType === 'percentage'){
+            const percentage = Number(document.getElementById('riPercentage').value) / 100;
+            projectedRent = projectedRent * (1 + percentage);
+        } else {
+            const fixedAmount = getCurrencyValue('riFixedAmount');
+            projectedRent = projectedRent + fixedAmount;
+        }
+        projection += `Year ${i}: ₦${Math.round(projectedRent).toLocaleString()}/month<br>`;
+    }
+    
+    // Display results
+    document.getElementById('riResultCurrent').textContent = '₦' + currentRent.toLocaleString();
+    document.getElementById('riResultNew').textContent = '₦' + Math.round(newMonthlyRent).toLocaleString();
+    document.getElementById('riResultMonthlyIncrease').textContent = '₦' + Math.round(monthlyIncrease).toLocaleString();
+    document.getElementById('riResultAnnualIncrease').textContent = '₦' + Math.round(annualIncrease).toLocaleString();
+    document.getElementById('riResultPayment').textContent = '₦' + Math.round(paymentAmount).toLocaleString();
+    document.getElementById('riProjection').innerHTML = projection;
+    
+    document.getElementById('rentIncreaseResult').classList.add('show');
+}
+
+// Late Fee Calculator
+function calculateLateFee(event){
+    event.preventDefault();
+    
+    const rentDue = getCurrencyValue('lfRentDue');
+    const feeType = document.getElementById('lfFeeType').value;
+    const maxCap = getCurrencyValue('lfMaxCap');
+    
+    let lateFee = 0;
+    let daysLate = 0;
+    
+    if(feeType === 'percentage'){
+        const percentage = Number(document.getElementById('lfPercentage').value) / 100;
+        lateFee = rentDue * percentage;
+    } else if(feeType === 'daily'){
+        daysLate = Number(document.getElementById('lfDaysLate').value);
+        const dailyRate = getCurrencyValue('lfDailyRate');
+        lateFee = dailyRate * daysLate;
+    } else {
+        lateFee = getCurrencyValue('lfFixedAmount');
+    }
+    
+    // Apply cap if specified
+    if(maxCap > 0 && lateFee > maxCap){
+        lateFee = maxCap;
+    }
+    
+    if(feeType !== 'daily'){
+        daysLate = Number(document.getElementById('lfDaysLate').value);
+    }
+    
+    const totalDue = rentDue + lateFee;
+    
+    // Display results
+    document.getElementById('lfResultRent').textContent = '₦' + rentDue.toLocaleString();
+    document.getElementById('lfResultDays').textContent = daysLate + ' days';
+    document.getElementById('lfResultFee').textContent = '₦' + Math.round(lateFee).toLocaleString();
+    document.getElementById('lfResultTotal').textContent = '₦' + Math.round(totalDue).toLocaleString();
+    
+    document.getElementById('lateFeeResult').classList.add('show');
+}
+
+// Lease Break Penalty Calculator
+function calculateLeaseBreak(event){
+    event.preventDefault();
+    
+    const monthlyRent = getCurrencyValue('lbMonthlyRent');
+    const leaseTerm = Number(document.getElementById('lbLeaseTerm').value);
+    const monthsCompleted = Number(document.getElementById('lbMonthsCompleted').value);
+    const penaltyType = document.getElementById('lbPenaltyType').value;
+    const securityDeposit = getCurrencyValue('lbSecurityDeposit');
+    const noticePeriod = Number(document.getElementById('lbNoticePeriod').value);
+    
+    const monthsRemaining = leaseTerm - monthsCompleted;
+    const remainingRent = monthlyRent * monthsRemaining;
+    
+    let penalty = 0;
+    let depositForfeited = 0;
+    
+    if(penaltyType === 'months'){
+        const penaltyMonths = Number(document.getElementById('lbPenaltyMonths').value);
+        penalty = monthlyRent * penaltyMonths;
+    } else if(penaltyType === 'percentage'){
+        const percentage = Number(document.getElementById('lbPenaltyPercentage').value) / 100;
+        penalty = remainingRent * percentage;
+    } else if(penaltyType === 'forfeit'){
+        depositForfeited = securityDeposit;
+        penalty = 0;
+    } else {
+        penalty = getCurrencyValue('lbCustomAmount');
+    }
+    
+    const noticeRent = monthlyRent * noticePeriod;
+    const totalCost = penalty + noticeRent + depositForfeited;
+    const potentialRefund = penaltyType === 'forfeit' ? 0 : securityDeposit;
+    
+    let advice = '';
+    if(monthsRemaining <= 3){
+        advice = `With only ${monthsRemaining} months remaining, consider negotiating with your landlord. The penalty (₦${Math.round(totalCost).toLocaleString()}) might be worth it if you have a compelling reason to leave.`;
+    } else {
+        advice = `Breaking your lease will cost ₦${Math.round(totalCost).toLocaleString()}. With ${monthsRemaining} months remaining, try to sublease or find a replacement tenant to minimize costs. Always review your lease agreement for specific terms.`;
+    }
+    
+    // Display results
+    document.getElementById('lbResultRemaining').textContent = monthsRemaining + ' months';
+    document.getElementById('lbResultPenalty').textContent = '₦' + Math.round(penalty).toLocaleString();
+    document.getElementById('lbResultNotice').textContent = '₦' + Math.round(noticeRent).toLocaleString();
+    document.getElementById('lbResultDeposit').textContent = '₦' + Math.round(depositForfeited).toLocaleString();
+    document.getElementById('lbResultTotal').textContent = '₦' + Math.round(totalCost).toLocaleString();
+    document.getElementById('lbResultRefund').textContent = '₦' + Math.round(potentialRefund).toLocaleString();
+    document.getElementById('lbAdvice').innerHTML = '<strong>Recommendation:</strong><br>' + advice;
+    
+    document.getElementById('leaseBreakResult').classList.add('show');
 }
 
 // Rent Affordability Calculator
