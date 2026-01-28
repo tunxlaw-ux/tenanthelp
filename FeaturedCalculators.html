@@ -678,13 +678,13 @@ MODAL / POPUP
 <aside class="sidebar" id="sidebar">
 <h3>Navigation</h3>
 <ul>
-<li><a href="index.html">HOMEPAGE GOALS</a></li>
+<li><a href="tenant-tools-hub.html">HOMEPAGE GOALS</a></li>
 <li><a href="#hero">HERO SECTION (Top of Page)</a></li>
-<li><a href="FeaturedCalculators.html">FEATURED CALCULATORS</a></li>
-<li><a href="RentGuideSection.html">RENT GUIDES SECTION</a></li>
-<li><a href="MovingAndUtilities.html">MOVING & UTILITIES SECTION</a></li>
+<li><a href="#featured" class="active">FEATURED CALCULATORS</a></li>
+<li><a href="#guides">RENT GUIDES SECTION</a></li>
+<li><a href="#moving">MOVING & UTILITIES SECTION</a></li>
 <li><a href="#pdfs">FREE PDFS</a></li>
-<li><a href="LatestArticles.html">LATEST ARTICLES</a></li>
+<li><a href="latest-articles.html">LATEST ARTICLES</a></li>
 </ul>
 </aside>
 
@@ -718,13 +718,13 @@ MODAL / POPUP
 </div>
 </div>
 <div class="calculator-grid">
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('rentAffordabilityModal')">
 <span class="card-icon">🏠</span>
 <h3>Rent Affordability Calculator</h3>
 <p>See how much rent you can comfortably afford based on your income</p>
 <span class="calculator-badge popular-badge">Popular</span>
 </div>
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('rentIncomeRatioModal')">
 <span class="card-icon">📊</span>
 <h3>Rent vs Income Ratio</h3>
 <p>Check if your rent is within the recommended income percentage</p>
@@ -749,19 +749,19 @@ MODAL / POPUP
 </div>
 </div>
 <div class="calculator-grid">
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('movingCostModal')">
 <span class="card-icon">📦</span>
 <h3>Moving Cost Estimator</h3>
 <p>Calculate total moving expenses including transport and packing</p>
 <span class="calculator-badge popular-badge">Popular</span>
 </div>
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('depositAgentModal')">
 <span class="card-icon">💳</span>
 <h3>Deposit + Agent Fee Calculator</h3>
 <p>Know exactly how much upfront cash you'll need</p>
 <span class="calculator-badge">Essential</span>
 </div>
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('furnishingModal')">
 <span class="card-icon">🛋️</span>
 <h3>Furnishing Cost Estimator</h3>
 <p>Budget for furniture and appliances for your new place</p>
@@ -780,19 +780,19 @@ MODAL / POPUP
 </div>
 </div>
 <div class="calculator-grid">
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('monthlyUtilitiesModal')">
 <span class="card-icon">📱</span>
 <h3>Monthly Utilities Estimator</h3>
 <p>Get an estimate of your total monthly utility bills</p>
 <span class="calculator-badge">Essential</span>
 </div>
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('electricityModal')">
 <span class="card-icon">💡</span>
 <h3>Electricity Usage Calculator</h3>
 <p>Calculate your expected electricity costs based on appliances</p>
 <span class="calculator-badge new-badge">New</span>
 </div>
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('waterModal')">
 <span class="card-icon">💧</span>
 <h3>Water Usage Calculator</h3>
 <p>Estimate your monthly water consumption and costs</p>
@@ -875,6 +875,819 @@ MODAL / POPUP
 </div>
 
 <!-- MODALS -->
+
+<!-- Monthly Utilities Estimator Modal -->
+<div class="modal" id="monthlyUtilitiesModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>📱 Monthly Utilities Estimator</h2>
+<p>Estimate your total monthly utility costs</p>
+<button class="close-modal" onclick="closeModal('monthlyUtilitiesModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="monthlyUtilitiesForm" onsubmit="calculateMonthlyUtilities(event)">
+
+<div class="form-group">
+<label>Electricity Bill (₦)</label>
+<input type="text" id="utilElectricity" placeholder="20,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Average monthly electricity cost</span>
+</div>
+
+<div class="form-group">
+<label>Water Bill (₦)</label>
+<input type="text" id="utilWater" placeholder="5,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Municipal water or vendor cost</span>
+</div>
+
+<div class="form-group">
+<label>Internet/WiFi (₦)</label>
+<input type="text" id="utilInternet" placeholder="10,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Monthly internet subscription</span>
+</div>
+
+<div class="form-group">
+<label>Cable TV/DSTV (₦)</label>
+<input type="text" id="utilCable" placeholder="5,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Satellite or cable subscription</span>
+</div>
+
+<div class="form-group">
+<label>Cooking Gas (₦)</label>
+<input type="text" id="utilGas" placeholder="8,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Average monthly gas refill cost</span>
+</div>
+
+<div class="form-group">
+<label>Waste Collection (₦)</label>
+<input type="text" id="utilWaste" placeholder="2,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Monthly waste disposal fee</span>
+</div>
+
+<div class="form-group">
+<label>Security/Estate Charge (₦)</label>
+<input type="text" id="utilSecurity" placeholder="5,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Monthly estate or security fee</span>
+</div>
+
+<div class="form-group">
+<label>Generator Fuel (₦)</label>
+<input type="text" id="utilFuel" placeholder="15,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Monthly fuel/diesel for generator</span>
+</div>
+
+<div class="form-group">
+<label>Other Utilities (₦)</label>
+<input type="text" id="utilOther" placeholder="0" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Any other recurring utility costs</span>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Total Utilities</button>
+
+<div class="result-box" id="monthlyUtilitiesResult">
+<h3>Your Monthly Utilities Breakdown</h3>
+<div class="result-item">
+<span class="result-label">Electricity:</span>
+<span class="result-value" id="utilResultElec">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Water:</span>
+<span class="result-value" id="utilResultWater">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Internet:</span>
+<span class="result-value" id="utilResultInternet">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Cable TV:</span>
+<span class="result-value" id="utilResultCable">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Cooking Gas:</span>
+<span class="result-value" id="utilResultGas">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Waste Collection:</span>
+<span class="result-value" id="utilResultWaste">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Security/Estate:</span>
+<span class="result-value" id="utilResultSecurity">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Generator Fuel:</span>
+<span class="result-value" id="utilResultFuel">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Other:</span>
+<span class="result-value" id="utilResultOther">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Monthly Utilities:</span>
+<span class="result-value" id="utilResultTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Annual Utilities Cost:</span>
+<span class="result-value" id="utilResultAnnual">₦0</span>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Electricity Usage Calculator Modal -->
+<div class="modal" id="electricityModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>💡 Electricity Usage Calculator</h2>
+<p>Estimate your monthly electricity bill</p>
+<button class="close-modal" onclick="closeModal('electricityModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="electricityForm" onsubmit="calculateElectricity(event)">
+
+<div class="form-group">
+<label>Electricity Tariff (₦/kWh)</label>
+<select id="electricityTariff" required>
+<option value="50">Band A - ₦50/kWh (20+ hours)</option>
+<option value="75" selected>Band B - ₦75/kWh (16-20 hours)</option>
+<option value="100">Band C - ₦100/kWh (12-16 hours)</option>
+<option value="125">Band D - ₦125/kWh (8-12 hours)</option>
+<option value="150">Band E - ₦150/kWh (<8 hours)</option>
+</select>
+<span class="input-helper">Select your distribution company's tariff band</span>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Major Appliances</h4>
+
+<div class="form-group">
+<label>Air Conditioner(s)</label>
+<input type="number" id="elecAC" min="0" value="0" placeholder="Number of units">
+<span class="input-helper">~1500W each, 8 hours/day average</span>
+</div>
+
+<div class="form-group">
+<label>Refrigerator(s)</label>
+<input type="number" id="elecFridge" min="0" value="1" placeholder="Number of units">
+<span class="input-helper">~150W each, 24 hours/day</span>
+</div>
+
+<div class="form-group">
+<label>Freezer(s)</label>
+<input type="number" id="elecFreezer" min="0" value="0" placeholder="Number of units">
+<span class="input-helper">~200W each, 24 hours/day</span>
+</div>
+
+<div class="form-group">
+<label>TV(s)</label>
+<input type="number" id="elecTV" min="0" value="1" placeholder="Number of units">
+<span class="input-helper">~100W each, 6 hours/day average</span>
+</div>
+
+<div class="form-group">
+<label>Washing Machine</label>
+<input type="number" id="elecWashing" min="0" value="0" placeholder="Number of units">
+<span class="input-helper">~500W each, 1 hour/day average</span>
+</div>
+
+<div class="form-group">
+<label>Iron</label>
+<input type="number" id="elecIron" min="0" value="1" placeholder="Number of units">
+<span class="input-helper">~1000W each, 0.5 hours/day average</span>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Lighting & Others</h4>
+
+<div class="form-group">
+<label>LED Bulbs</label>
+<input type="number" id="elecBulbs" min="0" value="8" placeholder="Number of bulbs">
+<span class="input-helper">~10W each, 5 hours/day average</span>
+</div>
+
+<div class="form-group">
+<label>Fans</label>
+<input type="number" id="elecFans" min="0" value="2" placeholder="Number of units">
+<span class="input-helper">~75W each, 8 hours/day average</span>
+</div>
+
+<div class="form-group">
+<label>Other Appliances (Total Watts)</label>
+<input type="number" id="elecOther" min="0" value="0" placeholder="Total wattage">
+<span class="input-helper">Phone chargers, laptops, microwaves, etc.</span>
+</div>
+
+<div class="form-group">
+<label>Days per Month</label>
+<input type="number" id="elecDays" min="1" max="31" value="30" required>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Electricity Bill</button>
+
+<div class="result-box" id="electricityResult">
+<h3>Your Electricity Cost Estimate</h3>
+<div class="result-item">
+<span class="result-label">Total Daily Consumption:</span>
+<span class="result-value" id="elecResultDaily">0 kWh</span>
+</div>
+<div class="result-item">
+<span class="result-label">Monthly Consumption:</span>
+<span class="result-value" id="elecResultMonthly">0 kWh</span>
+</div>
+<div class="result-item">
+<span class="result-label">Tariff Rate:</span>
+<span class="result-value" id="elecResultTariff">₦0/kWh</span>
+</div>
+<div class="result-item">
+<span class="result-label">Estimated Monthly Bill:</span>
+<span class="result-value" id="elecResultTotal">₦0</span>
+</div>
+<div class="result-item" style="border:none; padding-top:20px; margin-top:20px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="elecBreakdown" style="background:white; padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Water Usage Calculator Modal -->
+<div class="modal" id="waterModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>💧 Water Usage Calculator</h2>
+<p>Estimate your monthly water consumption and costs</p>
+<button class="close-modal" onclick="closeModal('waterModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="waterForm" onsubmit="calculateWater(event)">
+
+<div class="form-group">
+<label>Number of People in Household</label>
+<input type="number" id="waterPeople" min="1" value="4" required>
+<span class="input-helper">Average person uses 50-150 liters/day in Nigeria</span>
+</div>
+
+<div class="form-group">
+<label>Water Usage Level per Person</label>
+<select id="waterUsageLevel" required>
+<option value="50">Low (50 liters/day)</option>
+<option value="100" selected>Moderate (100 liters/day)</option>
+<option value="150">High (150 liters/day)</option>
+</select>
+<span class="input-helper">Based on bathing, cooking, cleaning habits</span>
+</div>
+
+<div class="form-group">
+<label>Water Source</label>
+<select id="waterSource" onchange="updateWaterRate()" required>
+<option value="borehole">Private Borehole</option>
+<option value="municipal" selected>Municipal/Public Supply</option>
+<option value="vendor">Water Vendor/Truck</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Cost per 1000 Liters (₦)</label>
+<input type="text" id="waterRate" placeholder="500" oninput="formatCurrency(this)" required>
+<span class="input-helper" id="waterRateHelper">Typical rate for selected source</span>
+</div>
+
+<div class="form-group">
+<label>Additional Usage (Liters/Month)</label>
+<input type="number" id="waterAdditional" min="0" value="0" placeholder="0">
+<span class="input-helper">Laundry, car washing, gardening, etc.</span>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Water Cost</button>
+
+<div class="result-box" id="waterResult">
+<h3>Your Water Usage Estimate</h3>
+<div class="result-item">
+<span class="result-label">Daily Usage:</span>
+<span class="result-value" id="waterResultDaily">0 L</span>
+</div>
+<div class="result-item">
+<span class="result-label">Monthly Usage:</span>
+<span class="result-value" id="waterResultMonthly">0 L</span>
+</div>
+<div class="result-item">
+<span class="result-label">Cost per 1000L:</span>
+<span class="result-value" id="waterResultRate">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Estimated Monthly Bill:</span>
+<span class="result-value" id="waterResultTotal">₦0</span>
+</div>
+<div class="result-item" style="border:none; padding-top:15px; margin-top:15px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="waterTips" style="background:linear-gradient(135deg, #e0fff4 0%, #ccfff0 100%); padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
+<strong style="color:#00b377;">💡 Water Saving Tips:</strong><br>
+• Fix leaking taps immediately<br>
+• Use buckets instead of running taps<br>
+• Reuse water where possible<br>
+• Take shorter showers
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Moving Cost Estimator Modal -->
+<div class="modal" id="movingCostModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>📦 Moving Cost Estimator</h2>
+<p>Calculate your complete moving expenses</p>
+<button class="close-modal" onclick="closeModal('movingCostModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="movingCostForm" onsubmit="calculateMovingCost(event)">
+
+<div class="form-group">
+<label>Distance Type</label>
+<select id="movingDistance" onchange="updateTransportCost()" required>
+<option value="local">Local (Within same area)</option>
+<option value="intracity">Intra-city (Across city)</option>
+<option value="interstate">Interstate (Different state)</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Apartment Size</label>
+<select id="movingSize" onchange="updateTransportCost()" required>
+<option value="studio">Studio/Self-contain</option>
+<option value="1bed">1 Bedroom</option>
+<option value="2bed" selected>2 Bedroom</option>
+<option value="3bed">3 Bedroom</option>
+<option value="4bed">4+ Bedrooms</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Estimated Transport Cost (₦)</label>
+<input type="text" id="movingTransport" placeholder="50,000" oninput="formatCurrency(this)" required>
+<span class="input-helper" id="transportHelper">Average for selected options</span>
+</div>
+
+<div class="form-group">
+<label>Number of Cartons Needed</label>
+<input type="number" id="movingCartons" min="0" value="20" required>
+<span class="input-helper">Cost per carton: ₦500-1,000</span>
+</div>
+
+<div class="form-group">
+<label>Packing Materials</label>
+<select id="movingPacking" required>
+<option value="5000">Basic (₦5,000)</option>
+<option value="10000" selected>Standard (₦10,000)</option>
+<option value="20000">Premium (₦20,000)</option>
+</select>
+<span class="input-helper">Tape, bubble wrap, markers, bags</span>
+</div>
+
+<div class="form-group">
+<label>Labor/Helpers (₦)</label>
+<input type="text" id="movingLabor" placeholder="10,000" oninput="formatCurrency(this)" value="10000">
+<span class="input-helper">Loaders, packers, helpers</span>
+</div>
+
+<div class="form-group">
+<label>Additional Costs (₦)</label>
+<input type="text" id="movingAdditional" placeholder="0" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Storage, special items, insurance, etc.</span>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Total Cost</button>
+
+<div class="result-box" id="movingCostResult">
+<h3>Your Moving Cost Breakdown</h3>
+<div class="result-item">
+<span class="result-label">Transport:</span>
+<span class="result-value" id="movingResultTransport">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Cartons:</span>
+<span class="result-value" id="movingResultCartons">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Packing Materials:</span>
+<span class="result-value" id="movingResultPacking">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Labor:</span>
+<span class="result-value" id="movingResultLabor">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Additional Costs:</span>
+<span class="result-value" id="movingResultAdditional">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Moving Cost:</span>
+<span class="result-value" id="movingResultTotal">₦0</span>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Deposit + Agent Fee Calculator Modal -->
+<div class="modal" id="depositAgentModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>💳 Deposit + Agent Fee Calculator</h2>
+<p>Calculate all upfront costs for your new apartment</p>
+<button class="close-modal" onclick="closeModal('depositAgentModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="depositAgentForm" onsubmit="calculateDepositAgent(event)">
+
+<div class="form-group">
+<label>Annual Rent (₦)</label>
+<input type="text" id="depositRent" placeholder="1,200,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Your yearly rent amount</span>
+</div>
+
+<div class="form-group">
+<label>Agent Fee (%)</label>
+<select id="depositAgentFee" required>
+<option value="5">5%</option>
+<option value="10" selected>10% (Standard)</option>
+<option value="15">15%</option>
+</select>
+<span class="input-helper">Usually 10% in most Nigerian cities</span>
+</div>
+
+<div class="form-group">
+<label>Legal/Agreement Fee (%)</label>
+<select id="depositLegalFee" required>
+<option value="0">0% (None)</option>
+<option value="5">5%</option>
+<option value="10" selected>10% (Standard)</option>
+</select>
+<span class="input-helper">Usually 5-10% of annual rent</span>
+</div>
+
+<div class="form-group">
+<label>Caution/Security Deposit (%)</label>
+<select id="depositCaution" required>
+<option value="0">0% (None)</option>
+<option value="10" selected>10%</option>
+<option value="20">20%</option>
+<option value="50">50% (6 months)</option>
+<option value="100">100% (Full year)</option>
+</select>
+<span class="input-helper">Refundable deposit for damages</span>
+</div>
+
+<div class="form-group">
+<label>Service Charge (Annual) (₦)</label>
+<input type="text" id="depositService" placeholder="50,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">For estates/compounds with security, waste, etc.</span>
+</div>
+
+<div class="form-group">
+<label>Other Fees (₦)</label>
+<input type="text" id="depositOther" placeholder="0" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Development levy, stamp duty, etc.</span>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Total Upfront Cost</button>
+
+<div class="result-box" id="depositAgentResult">
+<h3>Your Upfront Cost Breakdown</h3>
+<div class="result-item">
+<span class="result-label">Annual Rent:</span>
+<span class="result-value" id="depositResultRent">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Agent Fee:</span>
+<span class="result-value" id="depositResultAgent">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Legal/Agreement Fee:</span>
+<span class="result-value" id="depositResultLegal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Caution Deposit:</span>
+<span class="result-value" id="depositResultCaution">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Service Charge:</span>
+<span class="result-value" id="depositResultService">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Other Fees:</span>
+<span class="result-value" id="depositResultOther">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Upfront Cost:</span>
+<span class="result-value" id="depositResultTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Refundable Amount:</span>
+<span class="result-value" id="depositResultRefundable">₦0</span>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Furnishing Cost Estimator Modal -->
+<div class="modal" id="furnishingModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>🛋️ Furnishing Cost Estimator</h2>
+<p>Budget for furniture and appliances</p>
+<button class="close-modal" onclick="closeModal('furnishingModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="furnishingForm" onsubmit="calculateFurnishing(event)">
+
+<div class="form-group">
+<label>Apartment Size</label>
+<select id="furnishingSize" required>
+<option value="studio">Studio/Self-contain</option>
+<option value="1bed">1 Bedroom</option>
+<option value="2bed" selected>2 Bedroom</option>
+<option value="3bed">3 Bedroom</option>
+<option value="4bed">4+ Bedrooms</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Furnishing Level</label>
+<select id="furnishingLevel" onchange="updateFurnishingEstimate()" required>
+<option value="basic">Basic (Essential items only)</option>
+<option value="moderate" selected>Moderate (Comfortable living)</option>
+<option value="premium">Premium (High quality)</option>
+</select>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Living Room</h4>
+
+<div class="form-group">
+<label>Sofa Set (₦)</label>
+<input type="text" id="furnishingSofa" placeholder="100,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<div class="form-group">
+<label>TV + Stand (₦)</label>
+<input type="text" id="furnishingTV" placeholder="150,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<div class="form-group">
+<label>Center Table + Side Tables (₦)</label>
+<input type="text" id="furnishingTables" placeholder="40,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Bedroom(s)</h4>
+
+<div class="form-group">
+<label>Bed(s) + Mattress(es) (₦)</label>
+<input type="text" id="furnishingBed" placeholder="150,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<div class="form-group">
+<label>Wardrobe(s) (₦)</label>
+<input type="text" id="furnishingWardrobe" placeholder="80,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Kitchen</h4>
+
+<div class="form-group">
+<label>Gas Cooker (₦)</label>
+<input type="text" id="furnishingCooker" placeholder="50,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<div class="form-group">
+<label>Refrigerator (₦)</label>
+<input type="text" id="furnishingFridge" placeholder="150,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<div class="form-group">
+<label>Dining Set (₦)</label>
+<input type="text" id="furnishingDining" placeholder="60,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<div class="form-group">
+<label>Kitchen Utensils & Items (₦)</label>
+<input type="text" id="furnishingUtensils" placeholder="30,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Other Items</h4>
+
+<div class="form-group">
+<label>Curtains & Blinds (₦)</label>
+<input type="text" id="furnishingCurtains" placeholder="40,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<div class="form-group">
+<label>Generator/Inverter (₦)</label>
+<input type="text" id="furnishingGenerator" placeholder="200,000" oninput="formatCurrency(this)" value="0">
+</div>
+
+<div class="form-group">
+<label>Other Items (₦)</label>
+<input type="text" id="furnishingOther" placeholder="50,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Rugs, lamps, decorations, etc.</span>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Total Furnishing Cost</button>
+
+<div class="result-box" id="furnishingResult">
+<h3>Your Furnishing Budget</h3>
+<div class="result-item">
+<span class="result-label">Living Room:</span>
+<span class="result-value" id="furnishingResultLiving">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Bedroom(s):</span>
+<span class="result-value" id="furnishingResultBedroom">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Kitchen:</span>
+<span class="result-value" id="furnishingResultKitchen">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Other Items:</span>
+<span class="result-value" id="furnishingResultOther">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Furnishing Cost:</span>
+<span class="result-value" id="furnishingResultTotal">₦0</span>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Rent Affordability Calculator Modal -->
+<div class="modal" id="rentAffordabilityModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>🏠 Rent Affordability Calculator</h2>
+<p>Discover how much rent you can comfortably afford</p>
+<button class="close-modal" onclick="closeModal('rentAffordabilityModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="rentAffordabilityForm" onsubmit="calculateRentAffordability(event)">
+
+<div class="form-group">
+<label>Monthly Gross Income (₦)</label>
+<input type="text" id="affordGrossIncome" placeholder="500,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Your total monthly income before taxes</span>
+</div>
+
+<div class="form-group">
+<label>Monthly Debts/Obligations (₦)</label>
+<input type="text" id="affordDebts" placeholder="50,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Loans, credit cards, car payments, etc.</span>
+</div>
+
+<div class="form-group">
+<label>Other Monthly Expenses (₦)</label>
+<input type="text" id="affordExpenses" placeholder="100,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Food, transport, utilities, entertainment, etc.</span>
+</div>
+
+<div class="form-group">
+<label>Desired Savings Rate (%)</label>
+<select id="affordSavings" required>
+<option value="10">10% - Minimum</option>
+<option value="15">15% - Recommended</option>
+<option value="20" selected>20% - Good</option>
+<option value="25">25% - Excellent</option>
+<option value="30">30% - Aggressive</option>
+</select>
+<span class="input-helper">How much of your income do you want to save?</span>
+</div>
+
+<div class="form-group">
+<label>Rent Payment Frequency</label>
+<select id="affordFrequency" required>
+<option value="12">Monthly</option>
+<option value="1" selected>Annually</option>
+<option value="2">Bi-annually (6 months)</option>
+</select>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Affordable Rent</button>
+
+<div class="result-box" id="affordabilityResult">
+<h3>Your Rent Affordability Analysis</h3>
+<div class="result-item">
+<span class="result-label">Gross Monthly Income:</span>
+<span class="result-value" id="affordResultIncome">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Monthly Obligations:</span>
+<span class="result-value" id="affordResultObligations">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Available for Rent & Living:</span>
+<span class="result-value" id="affordResultAvailable">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Recommended Max Monthly Rent:</span>
+<span class="result-value" id="affordResultMaxMonthly">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Recommended Max Annual Rent:</span>
+<span class="result-value" id="affordResultMaxAnnual">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">You'll Pay Per Period:</span>
+<span class="result-value" id="affordResultPayment">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Remaining for Living Expenses:</span>
+<span class="result-value" id="affordResultRemaining">₦0</span>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Rent vs Income Ratio Calculator Modal -->
+<div class="modal" id="rentIncomeRatioModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>📊 Rent vs Income Ratio Calculator</h2>
+<p>Check if your rent is within healthy limits</p>
+<button class="close-modal" onclick="closeModal('rentIncomeRatioModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="rentRatioForm" onsubmit="calculateRentRatio(event)">
+
+<div class="form-group">
+<label>Monthly Rent (₦)</label>
+<input type="text" id="ratioRent" placeholder="150,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Your current or proposed monthly rent</span>
+</div>
+
+<div class="form-group">
+<label>Monthly Gross Income (₦)</label>
+<input type="text" id="ratioIncome" placeholder="500,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Your total monthly income before deductions</span>
+</div>
+
+<div class="form-group">
+<label>Other Monthly Debts (₦)</label>
+<input type="text" id="ratioDebts" placeholder="50,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Optional: Include to see debt-to-income ratio</span>
+</div>
+
+<button type="submit" class="calculate-btn">Analyze My Ratio</button>
+
+<div class="result-box" id="ratioResult">
+<h3>Your Rent-to-Income Analysis</h3>
+<div class="result-item">
+<span class="result-label">Monthly Rent:</span>
+<span class="result-value" id="ratioResultRent">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Monthly Income:</span>
+<span class="result-value" id="ratioResultIncome">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Rent-to-Income Ratio:</span>
+<span class="result-value" id="ratioResultPercentage">0%</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Debt-to-Income Ratio:</span>
+<span class="result-value" id="ratioResultDebtTotal">0%</span>
+</div>
+<div class="result-item">
+<span class="result-label">Assessment:</span>
+<span class="result-value" id="ratioResultStatus" style="font-size:16px;">-</span>
+</div>
+<div class="result-item">
+<span class="result-label">Monthly Income After Rent & Debts:</span>
+<span class="result-value" id="ratioResultRemaining">₦0</span>
+</div>
+<div class="result-item" style="border:none; padding-top:20px; margin-top:20px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="ratioAdvice" style="background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
 
 <!-- Max Rent Based on Salary Modal -->
 <div class="modal" id="maxRentModal">
@@ -1051,6 +1864,390 @@ function calculateMaxRent(event){
     document.getElementById('maxRentResult').classList.add('show');
 }
 
+// Update transport cost based on distance and size
+function updateTransportCost(){
+    const distance = document.getElementById('movingDistance').value;
+    const size = document.getElementById('movingSize').value;
+    
+    const costs = {
+        local: {studio: 15000, '1bed': 20000, '2bed': 30000, '3bed': 40000, '4bed': 50000},
+        intracity: {studio: 30000, '1bed': 40000, '2bed': 60000, '3bed': 80000, '4bed': 100000},
+        interstate: {studio: 80000, '1bed': 120000, '2bed': 180000, '3bed': 250000, '4bed': 350000}
+    };
+    
+    const estimatedCost = costs[distance][size];
+    document.getElementById('movingTransport').value = estimatedCost.toLocaleString();
+    document.getElementById('transportHelper').textContent = `Estimated: ₦${estimatedCost.toLocaleString()} for ${size} ${distance} move`;
+}
+
+// Moving Cost Calculator
+function calculateMovingCost(event){
+    event.preventDefault();
+    
+    const transport = getCurrencyValue('movingTransport');
+    const cartons = Number(document.getElementById('movingCartons').value);
+    const cartonCost = cartons * 750; // Average ₦750 per carton
+    const packing = Number(document.getElementById('movingPacking').value);
+    const labor = getCurrencyValue('movingLabor');
+    const additional = getCurrencyValue('movingAdditional');
+    
+    const total = transport + cartonCost + packing + labor + additional;
+    
+    // Display results
+    document.getElementById('movingResultTransport').textContent = '₦' + transport.toLocaleString();
+    document.getElementById('movingResultCartons').textContent = '₦' + cartonCost.toLocaleString() + ` (${cartons} × ₦750)`;
+    document.getElementById('movingResultPacking').textContent = '₦' + packing.toLocaleString();
+    document.getElementById('movingResultLabor').textContent = '₦' + labor.toLocaleString();
+    document.getElementById('movingResultAdditional').textContent = '₦' + additional.toLocaleString();
+    document.getElementById('movingResultTotal').textContent = '₦' + total.toLocaleString();
+    
+    // Show result box
+    document.getElementById('movingCostResult').classList.add('show');
+}
+
+// Deposit + Agent Fee Calculator
+function calculateDepositAgent(event){
+    event.preventDefault();
+    
+    const rent = getCurrencyValue('depositRent');
+    const agentFee = (rent * Number(document.getElementById('depositAgentFee').value)) / 100;
+    const legalFee = (rent * Number(document.getElementById('depositLegalFee').value)) / 100;
+    const caution = (rent * Number(document.getElementById('depositCaution').value)) / 100;
+    const service = getCurrencyValue('depositService');
+    const other = getCurrencyValue('depositOther');
+    
+    const total = rent + agentFee + legalFee + caution + service + other;
+    const refundable = caution; // Only caution deposit is refundable
+    
+    // Display results
+    document.getElementById('depositResultRent').textContent = '₦' + rent.toLocaleString();
+    document.getElementById('depositResultAgent').textContent = '₦' + agentFee.toLocaleString();
+    document.getElementById('depositResultLegal').textContent = '₦' + legalFee.toLocaleString();
+    document.getElementById('depositResultCaution').textContent = '₦' + caution.toLocaleString();
+    document.getElementById('depositResultService').textContent = '₦' + service.toLocaleString();
+    document.getElementById('depositResultOther').textContent = '₦' + other.toLocaleString();
+    document.getElementById('depositResultTotal').textContent = '₦' + total.toLocaleString();
+    document.getElementById('depositResultRefundable').textContent = '₦' + refundable.toLocaleString();
+    
+    // Show result box
+    document.getElementById('depositAgentResult').classList.add('show');
+}
+
+// Update furnishing estimate based on level
+function updateFurnishingEstimate(){
+    const level = document.getElementById('furnishingLevel').value;
+    const size = document.getElementById('furnishingSize').value;
+    
+    const estimates = {
+        basic: {
+            sofa: 50000, tv: 80000, tables: 20000, bed: 80000, wardrobe: 40000,
+            cooker: 30000, fridge: 80000, dining: 30000, utensils: 15000,
+            curtains: 20000, generator: 0, other: 20000
+        },
+        moderate: {
+            sofa: 150000, tv: 200000, tables: 50000, bed: 150000, wardrobe: 80000,
+            cooker: 60000, fridge: 150000, dining: 70000, utensils: 30000,
+            curtains: 50000, generator: 150000, other: 50000
+        },
+        premium: {
+            sofa: 300000, tv: 400000, tables: 100000, bed: 300000, wardrobe: 150000,
+            cooker: 120000, fridge: 300000, dining: 150000, utensils: 50000,
+            curtains: 100000, generator: 400000, other: 100000
+        }
+    };
+    
+    const estimate = estimates[level];
+    
+    // Adjust for apartment size
+    const sizeMultipliers = {studio: 0.5, '1bed': 0.7, '2bed': 1, '3bed': 1.3, '4bed': 1.6};
+    const multiplier = sizeMultipliers[size];
+    
+    document.getElementById('furnishingSofa').value = Math.floor(estimate.sofa * multiplier).toLocaleString();
+    document.getElementById('furnishingTV').value = estimate.tv.toLocaleString();
+    document.getElementById('furnishingTables').value = Math.floor(estimate.tables * multiplier).toLocaleString();
+    document.getElementById('furnishingBed').value = Math.floor(estimate.bed * multiplier).toLocaleString();
+    document.getElementById('furnishingWardrobe').value = Math.floor(estimate.wardrobe * multiplier).toLocaleString();
+    document.getElementById('furnishingCooker').value = estimate.cooker.toLocaleString();
+    document.getElementById('furnishingFridge').value = estimate.fridge.toLocaleString();
+    document.getElementById('furnishingDining').value = Math.floor(estimate.dining * multiplier).toLocaleString();
+    document.getElementById('furnishingUtensils').value = estimate.utensils.toLocaleString();
+    document.getElementById('furnishingCurtains').value = Math.floor(estimate.curtains * multiplier).toLocaleString();
+    document.getElementById('furnishingGenerator').value = estimate.generator.toLocaleString();
+    document.getElementById('furnishingOther').value = estimate.other.toLocaleString();
+}
+
+// Furnishing Cost Calculator
+function calculateFurnishing(event){
+    event.preventDefault();
+    
+    // Living room
+    const sofa = getCurrencyValue('furnishingSofa');
+    const tv = getCurrencyValue('furnishingTV');
+    const tables = getCurrencyValue('furnishingTables');
+    const livingTotal = sofa + tv + tables;
+    
+    // Bedroom
+    const bed = getCurrencyValue('furnishingBed');
+    const wardrobe = getCurrencyValue('furnishingWardrobe');
+    const bedroomTotal = bed + wardrobe;
+    
+    // Kitchen
+    const cooker = getCurrencyValue('furnishingCooker');
+    const fridge = getCurrencyValue('furnishingFridge');
+    const dining = getCurrencyValue('furnishingDining');
+    const utensils = getCurrencyValue('furnishingUtensils');
+    const kitchenTotal = cooker + fridge + dining + utensils;
+    
+    // Other
+    const curtains = getCurrencyValue('furnishingCurtains');
+    const generator = getCurrencyValue('furnishingGenerator');
+    const other = getCurrencyValue('furnishingOther');
+    const otherTotal = curtains + generator + other;
+    
+    const grandTotal = livingTotal + bedroomTotal + kitchenTotal + otherTotal;
+    
+    // Display results
+    document.getElementById('furnishingResultLiving').textContent = '₦' + livingTotal.toLocaleString();
+    document.getElementById('furnishingResultBedroom').textContent = '₦' + bedroomTotal.toLocaleString();
+    document.getElementById('furnishingResultKitchen').textContent = '₦' + kitchenTotal.toLocaleString();
+    document.getElementById('furnishingResultOther').textContent = '₦' + otherTotal.toLocaleString();
+    document.getElementById('furnishingResultTotal').textContent = '₦' + grandTotal.toLocaleString();
+    
+    // Show result box
+    document.getElementById('furnishingResult').classList.add('show');
+}
+
+// Monthly Utilities Estimator
+function calculateMonthlyUtilities(event){
+    event.preventDefault();
+    
+    const electricity = getCurrencyValue('utilElectricity');
+    const water = getCurrencyValue('utilWater');
+    const internet = getCurrencyValue('utilInternet');
+    const cable = getCurrencyValue('utilCable');
+    const gas = getCurrencyValue('utilGas');
+    const waste = getCurrencyValue('utilWaste');
+    const security = getCurrencyValue('utilSecurity');
+    const fuel = getCurrencyValue('utilFuel');
+    const other = getCurrencyValue('utilOther');
+    
+    const monthlyTotal = electricity + water + internet + cable + gas + waste + security + fuel + other;
+    const annualTotal = monthlyTotal * 12;
+    
+    // Display results
+    document.getElementById('utilResultElec').textContent = '₦' + electricity.toLocaleString();
+    document.getElementById('utilResultWater').textContent = '₦' + water.toLocaleString();
+    document.getElementById('utilResultInternet').textContent = '₦' + internet.toLocaleString();
+    document.getElementById('utilResultCable').textContent = '₦' + cable.toLocaleString();
+    document.getElementById('utilResultGas').textContent = '₦' + gas.toLocaleString();
+    document.getElementById('utilResultWaste').textContent = '₦' + waste.toLocaleString();
+    document.getElementById('utilResultSecurity').textContent = '₦' + security.toLocaleString();
+    document.getElementById('utilResultFuel').textContent = '₦' + fuel.toLocaleString();
+    document.getElementById('utilResultOther').textContent = '₦' + other.toLocaleString();
+    document.getElementById('utilResultTotal').textContent = '₦' + monthlyTotal.toLocaleString();
+    document.getElementById('utilResultAnnual').textContent = '₦' + annualTotal.toLocaleString();
+    
+    // Show result box
+    document.getElementById('monthlyUtilitiesResult').classList.add('show');
+}
+
+// Update water rate based on source
+function updateWaterRate(){
+    const source = document.getElementById('waterSource').value;
+    const rates = {
+        borehole: 200,
+        municipal: 500,
+        vendor: 1500
+    };
+    
+    const helpers = {
+        borehole: 'Maintenance and pumping costs only',
+        municipal: 'Typical government water board rate',
+        vendor: 'Average water truck/vendor rate'
+    };
+    
+    document.getElementById('waterRate').value = rates[source].toLocaleString();
+    document.getElementById('waterRateHelper').textContent = helpers[source];
+}
+
+// Electricity Calculator
+function calculateElectricity(event){
+    event.preventDefault();
+    
+    const tariff = Number(document.getElementById('electricityTariff').value);
+    const days = Number(document.getElementById('elecDays').value);
+    
+    // Calculate daily consumption for each appliance (in kWh)
+    const ac = Number(document.getElementById('elecAC').value) * 1.5 * 8; // 1500W, 8 hrs
+    const fridge = Number(document.getElementById('elecFridge').value) * 0.15 * 24; // 150W, 24 hrs
+    const freezer = Number(document.getElementById('elecFreezer').value) * 0.2 * 24; // 200W, 24 hrs
+    const tv = Number(document.getElementById('elecTV').value) * 0.1 * 6; // 100W, 6 hrs
+    const washing = Number(document.getElementById('elecWashing').value) * 0.5 * 1; // 500W, 1 hr
+    const iron = Number(document.getElementById('elecIron').value) * 1 * 0.5; // 1000W, 0.5 hrs
+    const bulbs = Number(document.getElementById('elecBulbs').value) * 0.01 * 5; // 10W, 5 hrs
+    const fans = Number(document.getElementById('elecFans').value) * 0.075 * 8; // 75W, 8 hrs
+    const other = Number(document.getElementById('elecOther').value) * 4 / 1000; // Assuming 4 hrs avg
+    
+    const dailyKwh = ac + fridge + freezer + tv + washing + iron + bulbs + fans + other;
+    const monthlyKwh = dailyKwh * days;
+    const monthlyBill = monthlyKwh * tariff;
+    
+    // Create breakdown
+    const breakdown = `
+        <strong>Daily Consumption Breakdown:</strong><br>
+        ${ac > 0 ? `• Air Conditioner: ${ac.toFixed(2)} kWh<br>` : ''}
+        ${fridge > 0 ? `• Refrigerator: ${fridge.toFixed(2)} kWh<br>` : ''}
+        ${freezer > 0 ? `• Freezer: ${freezer.toFixed(2)} kWh<br>` : ''}
+        ${tv > 0 ? `• TV: ${tv.toFixed(2)} kWh<br>` : ''}
+        ${washing > 0 ? `• Washing Machine: ${washing.toFixed(2)} kWh<br>` : ''}
+        ${iron > 0 ? `• Iron: ${iron.toFixed(2)} kWh<br>` : ''}
+        ${bulbs > 0 ? `• LED Bulbs: ${bulbs.toFixed(2)} kWh<br>` : ''}
+        ${fans > 0 ? `• Fans: ${fans.toFixed(2)} kWh<br>` : ''}
+        ${other > 0 ? `• Other Appliances: ${other.toFixed(2)} kWh<br>` : ''}
+    `;
+    
+    // Display results
+    document.getElementById('elecResultDaily').textContent = dailyKwh.toFixed(2) + ' kWh';
+    document.getElementById('elecResultMonthly').textContent = monthlyKwh.toFixed(2) + ' kWh';
+    document.getElementById('elecResultTariff').textContent = '₦' + tariff.toLocaleString() + '/kWh';
+    document.getElementById('elecResultTotal').textContent = '₦' + Math.round(monthlyBill).toLocaleString();
+    document.getElementById('elecBreakdown').innerHTML = breakdown;
+    
+    // Show result box
+    document.getElementById('electricityResult').classList.add('show');
+}
+
+// Water Calculator
+function calculateWater(event){
+    event.preventDefault();
+    
+    const people = Number(document.getElementById('waterPeople').value);
+    const usageLevel = Number(document.getElementById('waterUsageLevel').value);
+    const rate = getCurrencyValue('waterRate');
+    const additional = Number(document.getElementById('waterAdditional').value);
+    
+    // Calculate usage
+    const dailyUsage = people * usageLevel;
+    const monthlyUsage = (dailyUsage * 30) + additional;
+    
+    // Calculate cost
+    const monthlyCost = (monthlyUsage / 1000) * rate;
+    
+    // Display results
+    document.getElementById('waterResultDaily').textContent = dailyUsage.toLocaleString() + ' L';
+    document.getElementById('waterResultMonthly').textContent = monthlyUsage.toLocaleString() + ' L';
+    document.getElementById('waterResultRate').textContent = '₦' + rate.toLocaleString();
+    document.getElementById('waterResultTotal').textContent = '₦' + Math.round(monthlyCost).toLocaleString();
+    
+    // Show result box
+    document.getElementById('waterResult').classList.add('show');
+}
+
+// Rent Affordability Calculator
+function calculateRentAffordability(event){
+    event.preventDefault();
+    
+    const income = getCurrencyValue('affordGrossIncome');
+    const debts = getCurrencyValue('affordDebts');
+    const expenses = getCurrencyValue('affordExpenses');
+    const savingsRate = Number(document.getElementById('affordSavings').value);
+    const frequency = Number(document.getElementById('affordFrequency').value);
+    
+    // Calculate savings amount
+    const savingsAmount = (income * savingsRate) / 100;
+    
+    // Calculate total obligations (debts + expenses + savings)
+    const totalObligations = debts + expenses + savingsAmount;
+    
+    // Available for rent
+    const availableForRent = income - totalObligations;
+    
+    // Max monthly rent (what's left after obligations)
+    const maxMonthlyRent = Math.max(0, availableForRent);
+    
+    // Annual rent
+    const maxAnnualRent = maxMonthlyRent * 12;
+    
+    // Payment amount based on frequency
+    let paymentAmount;
+    if(frequency === 12){
+        paymentAmount = maxMonthlyRent;
+    } else if(frequency === 2){
+        paymentAmount = maxMonthlyRent * 6;
+    } else {
+        paymentAmount = maxAnnualRent;
+    }
+    
+    // Remaining after rent for other living expenses
+    const remaining = income - debts - maxMonthlyRent - savingsAmount;
+    
+    // Display results
+    document.getElementById('affordResultIncome').textContent = '₦' + income.toLocaleString();
+    document.getElementById('affordResultObligations').textContent = '₦' + (debts + expenses + savingsAmount).toLocaleString();
+    document.getElementById('affordResultAvailable').textContent = '₦' + availableForRent.toLocaleString();
+    document.getElementById('affordResultMaxMonthly').textContent = '₦' + Math.floor(maxMonthlyRent).toLocaleString();
+    document.getElementById('affordResultMaxAnnual').textContent = '₦' + Math.floor(maxAnnualRent).toLocaleString();
+    document.getElementById('affordResultPayment').textContent = '₦' + Math.floor(paymentAmount).toLocaleString();
+    document.getElementById('affordResultRemaining').textContent = '₦' + Math.floor(remaining).toLocaleString();
+    
+    // Show result box
+    document.getElementById('affordabilityResult').classList.add('show');
+}
+
+// Rent vs Income Ratio Calculator
+function calculateRentRatio(event){
+    event.preventDefault();
+    
+    const rent = getCurrencyValue('ratioRent');
+    const income = getCurrencyValue('ratioIncome');
+    const debts = getCurrencyValue('ratioDebts');
+    
+    // Calculate ratios
+    const rentRatio = (rent / income) * 100;
+    const totalDebtRatio = ((rent + debts) / income) * 100;
+    const remaining = income - rent - debts;
+    
+    // Determine status and advice
+    let status = '';
+    let statusColor = '';
+    let advice = '';
+    
+    if(rentRatio <= 25){
+        status = '✅ Excellent - Very Comfortable';
+        statusColor = '#00b377';
+        advice = 'Your rent is well within the recommended range. You have plenty of room in your budget for savings and other expenses. This is a financially healthy situation.';
+    } else if(rentRatio <= 30){
+        status = '✅ Good - Comfortable';
+        statusColor = '#00b377';
+        advice = 'Your rent is at the recommended maximum of 30%. This is generally considered affordable, but make sure you\'re also saving and have room for unexpected expenses.';
+    } else if(rentRatio <= 35){
+        status = '⚠️ Moderate - Stretching';
+        statusColor = '#ffb020';
+        advice = 'Your rent is slightly above the recommended 30%. You may need to be careful with other expenses and might have limited room for savings. Consider if you can reduce rent or increase income.';
+    } else if(rentRatio <= 40){
+        status = '⚠️ High - Risky';
+        statusColor = '#ff6b35';
+        advice = 'Your rent is significantly above the recommended limit. This leaves little room for emergencies, savings, or other expenses. Strongly consider finding more affordable housing or increasing your income.';
+    } else {
+        status = '❌ Very High - Unsustainable';
+        statusColor = '#ff4444';
+        advice = 'Your rent is dangerously high relative to your income. This is financially unsustainable and leaves almost no room for other expenses. You should prioritize finding more affordable housing immediately.';
+    }
+    
+    // Display results
+    document.getElementById('ratioResultRent').textContent = '₦' + rent.toLocaleString();
+    document.getElementById('ratioResultIncome').textContent = '₦' + income.toLocaleString();
+    document.getElementById('ratioResultPercentage').textContent = rentRatio.toFixed(1) + '%';
+    document.getElementById('ratioResultDebtTotal').textContent = totalDebtRatio.toFixed(1) + '%';
+    document.getElementById('ratioResultStatus').textContent = status;
+    document.getElementById('ratioResultStatus').style.color = statusColor;
+    document.getElementById('ratioResultRemaining').textContent = '₦' + remaining.toLocaleString();
+    document.getElementById('ratioAdvice').innerHTML = '<strong>Recommendation:</strong><br>' + advice;
+    
+    // Show result box
+    document.getElementById('ratioResult').classList.add('show');
+}
+
 // Add click handlers to calculator cards
 document.querySelectorAll('.calculator-card').forEach(card => {
     if(!card.hasAttribute('onclick')){
@@ -1064,5 +2261,4 @@ document.querySelectorAll('.calculator-card').forEach(card => {
 </script>
 
 </body>
-
 </html>
