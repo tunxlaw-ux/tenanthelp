@@ -842,19 +842,19 @@ MODAL / POPUP
 </div>
 </div>
 <div class="calculator-grid">
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('rentVsBuyModal')">
 <span class="card-icon">🏘️</span>
 <h3>Rent vs Buy Calculator</h3>
 <p>Compare long-term costs of renting versus buying property</p>
 <span class="calculator-badge popular-badge">Popular</span>
 </div>
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('apartmentVsHouseModal')">
 <span class="card-icon">🏢</span>
 <h3>Apartment vs House Cost Calculator</h3>
 <p>Compare total costs between apartments and houses</p>
 <span class="calculator-badge">Essential</span>
 </div>
-<div class="calculator-card">
+<div class="calculator-card" onclick="openModal('furnishedVsUnfurnishedModal')">
 <span class="card-icon">🪑</span>
 <h3>Furnished vs Unfurnished Calculator</h3>
 <p>Decide which option saves you more money over time</p>
@@ -1197,6 +1197,358 @@ MODAL / POPUP
 </div>
 </div>
 
+<!-- Rent vs Buy Calculator Modal -->
+<div class="modal" id="rentVsBuyModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>🏘️ Rent vs Buy Calculator</h2>
+<p>Compare long-term costs of renting versus buying</p>
+<button class="close-modal" onclick="closeModal('rentVsBuyModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="rentVsBuyForm" onsubmit="calculateRentVsBuy(event)">
+
+<h4 style="margin:0 0 20px 0; color:#2b59ff;">Renting Scenario</h4>
+
+<div class="form-group">
+<label>Monthly Rent (₦)</label>
+<input type="text" id="rvbRent" placeholder="300,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Current or expected monthly rent</span>
+</div>
+
+<div class="form-group">
+<label>Annual Rent Increase (%)</label>
+<select id="rvbRentIncrease" required>
+<option value="5">5% - Conservative</option>
+<option value="10" selected>10% - Standard</option>
+<option value="15">15% - High inflation</option>
+</select>
+</div>
+
+<h4 style="margin:30px 0 20px 0; color:#2b59ff;">Buying Scenario</h4>
+
+<div class="form-group">
+<label>Property Purchase Price (₦)</label>
+<input type="text" id="rvbPurchasePrice" placeholder="50,000,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Total cost of the property</span>
+</div>
+
+<div class="form-group">
+<label>Down Payment (₦)</label>
+<input type="text" id="rvbDownPayment" placeholder="10,000,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Initial cash payment (typically 20-30%)</span>
+</div>
+
+<div class="form-group">
+<label>Mortgage Interest Rate (% per year)</label>
+<input type="number" id="rvbInterestRate" min="0" step="0.1" value="18" required>
+<span class="input-helper">Current mortgage rate in Nigeria: 15-25%</span>
+</div>
+
+<div class="form-group">
+<label>Mortgage Term (Years)</label>
+<select id="rvbMortgageTerm" required>
+<option value="10">10 years</option>
+<option value="15">15 years</option>
+<option value="20" selected>20 years</option>
+<option value="25">25 years</option>
+<option value="30">30 years</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Property Tax & Maintenance (₦/year)</label>
+<input type="text" id="rvbMaintenance" placeholder="500,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Annual property tax, repairs, insurance</span>
+</div>
+
+<div class="form-group">
+<label>Property Appreciation (% per year)</label>
+<select id="rvbAppreciation" required>
+<option value="3">3% - Conservative</option>
+<option value="5" selected>5% - Moderate</option>
+<option value="8">8% - Optimistic</option>
+</select>
+</div>
+
+<h4 style="margin:30px 0 20px 0; color:#2b59ff;">Comparison Period</h4>
+
+<div class="form-group">
+<label>Years to Compare</label>
+<select id="rvbYears" required>
+<option value="5">5 years</option>
+<option value="10" selected>10 years</option>
+<option value="15">15 years</option>
+<option value="20">20 years</option>
+<option value="25">25 years</option>
+<option value="30">30 years</option>
+</select>
+</div>
+
+<button type="submit" class="calculate-btn">Compare Rent vs Buy</button>
+
+<div class="result-box" id="rentVsBuyResult">
+<h3>Rent vs Buy Comparison</h3>
+<div class="result-item">
+<span class="result-label">Total Cost of Renting:</span>
+<span class="result-value" id="rvbResultRentTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Cost of Buying:</span>
+<span class="result-value" id="rvbResultBuyTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Property Value After Period:</span>
+<span class="result-value" id="rvbResultPropertyValue">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Net Equity (Buy):</span>
+<span class="result-value" id="rvbResultEquity">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Difference:</span>
+<span class="result-value" id="rvbResultDifference">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Better Option:</span>
+<span class="result-value" id="rvbResultBetter" style="font-size:20px;">-</span>
+</div>
+<div class="result-item" style="border:none; padding-top:20px; margin-top:20px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="rvbAdvice" style="background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Apartment vs House Cost Calculator Modal -->
+<div class="modal" id="apartmentVsHouseModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>🏢 Apartment vs House Cost Calculator</h2>
+<p>Compare total costs between apartments and houses</p>
+<button class="close-modal" onclick="closeModal('apartmentVsHouseModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="apartmentVsHouseForm" onsubmit="calculateApartmentVsHouse(event)">
+
+<h4 style="margin:0 0 20px 0; color:#2b59ff;">Apartment Option</h4>
+
+<div class="form-group">
+<label>Annual Rent (₦)</label>
+<input type="text" id="avhAptRent" placeholder="1,200,000" oninput="formatCurrency(this)" required>
+</div>
+
+<div class="form-group">
+<label>Service Charge (₦/year)</label>
+<input type="text" id="avhAptService" placeholder="120,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Security, waste, facilities maintenance</span>
+</div>
+
+<div class="form-group">
+<label>Average Monthly Utilities (₦)</label>
+<input type="text" id="avhAptUtilities" placeholder="30,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Electricity, water, internet, etc.</span>
+</div>
+
+<h4 style="margin:30px 0 20px 0; color:#2b59ff;">House Option</h4>
+
+<div class="form-group">
+<label>Annual Rent (₦)</label>
+<input type="text" id="avhHouseRent" placeholder="2,000,000" oninput="formatCurrency(this)" required>
+</div>
+
+<div class="form-group">
+<label>Property Maintenance (₦/year)</label>
+<input type="text" id="avhHouseMaintenance" placeholder="300,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Repairs, painting, compound upkeep</span>
+</div>
+
+<div class="form-group">
+<label>Average Monthly Utilities (₦)</label>
+<input type="text" id="avhHouseUtilities" placeholder="50,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Usually higher due to larger space</span>
+</div>
+
+<div class="form-group">
+<label>Security/Guard (₦/month)</label>
+<input type="text" id="avhHouseSecurity" placeholder="30,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">If hiring private security</span>
+</div>
+
+<div class="form-group">
+<label>Generator Fuel (₦/month)</label>
+<input type="text" id="avhHouseFuel" placeholder="20,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Usually higher consumption in houses</span>
+</div>
+
+<h4 style="margin:30px 0 20px 0; color:#2b59ff;">Comparison Period</h4>
+
+<div class="form-group">
+<label>Years to Compare</label>
+<select id="avhYears" required>
+<option value="1">1 year</option>
+<option value="3">3 years</option>
+<option value="5" selected>5 years</option>
+<option value="10">10 years</option>
+</select>
+</div>
+
+<button type="submit" class="calculate-btn">Compare Costs</button>
+
+<div class="result-box" id="apartmentVsHouseResult">
+<h3>Cost Comparison</h3>
+<div class="result-item">
+<span class="result-label">Apartment Annual Cost:</span>
+<span class="result-value" id="avhResultAptAnnual">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">House Annual Cost:</span>
+<span class="result-value" id="avhResultHouseAnnual">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Apartment Cost (Period):</span>
+<span class="result-value" id="avhResultAptTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total House Cost (Period):</span>
+<span class="result-value" id="avhResultHouseTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Difference:</span>
+<span class="result-value" id="avhResultDifference">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">More Affordable Option:</span>
+<span class="result-value" id="avhResultBetter" style="font-size:20px;">-</span>
+</div>
+<div class="result-item" style="border:none; padding-top:20px; margin-top:20px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="avhBreakdown" style="background:white; padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Furnished vs Unfurnished Calculator Modal -->
+<div class="modal" id="furnishedVsUnfurnishedModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>🪑 Furnished vs Unfurnished Calculator</h2>
+<p>Decide which option saves you more money over time</p>
+<button class="close-modal" onclick="closeModal('furnishedVsUnfurnishedModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="furnishedVsUnfurnishedForm" onsubmit="calculateFurnishedVsUnfurnished(event)">
+
+<h4 style="margin:0 0 20px 0; color:#2b59ff;">Furnished Apartment</h4>
+
+<div class="form-group">
+<label>Monthly Rent (₦)</label>
+<input type="text" id="fvuFurnishedRent" placeholder="400,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Usually 30-50% more than unfurnished</span>
+</div>
+
+<div class="form-group">
+<label>Caution Deposit (₦)</label>
+<input type="text" id="fvuFurnishedDeposit" placeholder="800,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Higher for furnished (usually 2x rent)</span>
+</div>
+
+<h4 style="margin:30px 0 20px 0; color:#2b59ff;">Unfurnished Apartment</h4>
+
+<div class="form-group">
+<label>Monthly Rent (₦)</label>
+<input type="text" id="fvuUnfurnishedRent" placeholder="300,000" oninput="formatCurrency(this)" required>
+</div>
+
+<div class="form-group">
+<label>Caution Deposit (₦)</label>
+<input type="text" id="fvuUnfurnishedDeposit" placeholder="300,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Usually 1x rent</span>
+</div>
+
+<div class="form-group">
+<label>Furnishing Cost (₦)</label>
+<input type="text" id="fvuFurnishingCost" placeholder="2,000,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">One-time cost to furnish the apartment</span>
+</div>
+
+<div class="form-group">
+<label>Furniture Resale Value After Period (%)</label>
+<select id="fvuResaleValue" required>
+<option value="20">20% - Poor condition</option>
+<option value="40">40% - Fair condition</option>
+<option value="50" selected>50% - Average</option>
+<option value="60">60% - Good condition</option>
+<option value="70">70% - Excellent condition</option>
+</select>
+<span class="input-helper">Estimated resale value of furniture</span>
+</div>
+
+<h4 style="margin:30px 0 20px 0; color:#2b59ff;">Comparison Details</h4>
+
+<div class="form-group">
+<label>Length of Stay (Years)</label>
+<select id="fvuYears" required>
+<option value="1">1 year</option>
+<option value="2">2 years</option>
+<option value="3" selected>3 years</option>
+<option value="5">5 years</option>
+<option value="10">10 years</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Agent Fee (% of annual rent)</label>
+<input type="number" id="fvuAgentFee" min="0" max="20" value="10" required>
+</div>
+
+<button type="submit" class="calculate-btn">Compare Options</button>
+
+<div class="result-box" id="furnishedVsUnfurnishedResult">
+<h3>Cost Comparison</h3>
+<div class="result-item">
+<span class="result-label">Furnished Total Cost:</span>
+<span class="result-value" id="fvuResultFurnishedTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Unfurnished Total Cost:</span>
+<span class="result-value" id="fvuResultUnfurnishedTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Furniture Resale Value:</span>
+<span class="result-value" id="fvuResultResale">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Net Unfurnished Cost:</span>
+<span class="result-value" id="fvuResultUnfurnishedNet">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Difference:</span>
+<span class="result-value" id="fvuResultDifference">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Better Option:</span>
+<span class="result-value" id="fvuResultBetter" style="font-size:20px;">-</span>
+</div>
+<div class="result-item" style="border:none; padding-top:20px; margin-top:20px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="fvuAdvice" style="background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
 <!-- Moving Cost Estimator Modal -->
 <div class="modal" id="movingCostModal">
 <div class="modal-content">
@@ -1524,6 +1876,333 @@ MODAL / POPUP
 <div class="result-item">
 <span class="result-label">Total Furnishing Cost:</span>
 <span class="result-value" id="furnishingResultTotal">₦0</span>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Rent vs Buy Calculator Modal -->
+<div class="modal" id="rentVsBuyModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>🏘️ Rent vs Buy Calculator</h2>
+<p>Compare the long-term costs of renting vs buying</p>
+<button class="close-modal" onclick="closeModal('rentVsBuyModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="rentVsBuyForm" onsubmit="calculateRentVsBuy(event)">
+
+<h4 style="margin:0 0 15px 0; color:#2b59ff;">Renting Option</h4>
+
+<div class="form-group">
+<label>Monthly Rent (₦)</label>
+<input type="text" id="rvbMonthlyRent" placeholder="300,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Current or expected monthly rent</span>
+</div>
+
+<div class="form-group">
+<label>Annual Rent Increase (%)</label>
+<select id="rvbRentIncrease" required>
+<option value="5">5% - Conservative</option>
+<option value="10" selected>10% - Standard</option>
+<option value="15">15% - High</option>
+<option value="20">20% - Very High</option>
+</select>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Buying Option</h4>
+
+<div class="form-group">
+<label>Property Purchase Price (₦)</label>
+<input type="text" id="rvbPurchasePrice" placeholder="50,000,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Total cost to buy the property</span>
+</div>
+
+<div class="form-group">
+<label>Down Payment (₦)</label>
+<input type="text" id="rvbDownPayment" placeholder="10,000,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Initial payment (typically 20-30%)</span>
+</div>
+
+<div class="form-group">
+<label>Mortgage Interest Rate (% per year)</label>
+<input type="number" id="rvbInterestRate" min="0" step="0.1" value="18" required>
+<span class="input-helper">Annual mortgage interest rate in Nigeria</span>
+</div>
+
+<div class="form-group">
+<label>Mortgage Term (Years)</label>
+<select id="rvbMortgageTerm" required>
+<option value="10">10 years</option>
+<option value="15">15 years</option>
+<option value="20" selected>20 years</option>
+<option value="25">25 years</option>
+<option value="30">30 years</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Annual Property Tax & Insurance (₦)</label>
+<input type="text" id="rvbPropertyCosts" placeholder="500,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Yearly property tax, insurance, maintenance</span>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Comparison Period</h4>
+
+<div class="form-group">
+<label>Years to Compare</label>
+<select id="rvbYears" required>
+<option value="5">5 years</option>
+<option value="10" selected>10 years</option>
+<option value="15">15 years</option>
+<option value="20">20 years</option>
+<option value="30">30 years</option>
+</select>
+</div>
+
+<button type="submit" class="calculate-btn">Compare Rent vs Buy</button>
+
+<div class="result-box" id="rentVsBuyResult">
+<h3>Rent vs Buy Comparison</h3>
+<div class="result-item">
+<span class="result-label">Total Cost of Renting:</span>
+<span class="result-value" id="rvbResultRent">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Cost of Buying:</span>
+<span class="result-value" id="rvbResultBuy">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Monthly Mortgage Payment:</span>
+<span class="result-value" id="rvbResultMortgage">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Difference:</span>
+<span class="result-value" id="rvbResultDifference">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Better Option:</span>
+<span class="result-value" id="rvbResultBetter" style="font-size:18px;">-</span>
+</div>
+<div class="result-item" style="border:none; padding-top:20px; margin-top:20px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="rvbAdvice" style="background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Apartment vs House Cost Calculator Modal -->
+<div class="modal" id="apartmentVsHouseModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>🏢 Apartment vs House Cost Calculator</h2>
+<p>Compare total costs between apartments and houses</p>
+<button class="close-modal" onclick="closeModal('apartmentVsHouseModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="apartmentVsHouseForm" onsubmit="calculateApartmentVsHouse(event)">
+
+<h4 style="margin:0 0 15px 0; color:#2b59ff;">Apartment Option</h4>
+
+<div class="form-group">
+<label>Annual Rent (₦)</label>
+<input type="text" id="avhAptRent" placeholder="3,600,000" oninput="formatCurrency(this)" required>
+</div>
+
+<div class="form-group">
+<label>Service Charge (Annual) (₦)</label>
+<input type="text" id="avhAptService" placeholder="200,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Security, waste, maintenance fees</span>
+</div>
+
+<div class="form-group">
+<label>Utilities (Monthly Average) (₦)</label>
+<input type="text" id="avhAptUtilities" placeholder="30,000" oninput="formatCurrency(this)" required>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">House Option</h4>
+
+<div class="form-group">
+<label>Annual Rent (₦)</label>
+<input type="text" id="avhHouseRent" placeholder="4,800,000" oninput="formatCurrency(this)" required>
+</div>
+
+<div class="form-group">
+<label>Utilities (Monthly Average) (₦)</label>
+<input type="text" id="avhHouseUtilities" placeholder="50,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Usually higher due to larger space</span>
+</div>
+
+<div class="form-group">
+<label>Maintenance (Annual) (₦)</label>
+<input type="text" id="avhHouseMaintenance" placeholder="500,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Repairs, compound upkeep, generator servicing</span>
+</div>
+
+<div class="form-group">
+<label>Security (Annual) (₦)</label>
+<input type="text" id="avhHouseSecurity" placeholder="300,000" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Private security, gate man salary</span>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Comparison Period</h4>
+
+<div class="form-group">
+<label>Years to Compare</label>
+<select id="avhYears" required>
+<option value="1">1 year</option>
+<option value="3">3 years</option>
+<option value="5" selected>5 years</option>
+<option value="10">10 years</option>
+</select>
+</div>
+
+<button type="submit" class="calculate-btn">Compare Apartment vs House</button>
+
+<div class="result-box" id="apartmentVsHouseResult">
+<h3>Apartment vs House Comparison</h3>
+<div class="result-item">
+<span class="result-label">Apartment - Annual Cost:</span>
+<span class="result-value" id="avhResultAptAnnual">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">House - Annual Cost:</span>
+<span class="result-value" id="avhResultHouseAnnual">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Apartment - Total Cost:</span>
+<span class="result-value" id="avhResultAptTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">House - Total Cost:</span>
+<span class="result-value" id="avhResultHouseTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Difference:</span>
+<span class="result-value" id="avhResultDifference">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">More Affordable:</span>
+<span class="result-value" id="avhResultBetter" style="font-size:18px;">-</span>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Furnished vs Unfurnished Calculator Modal -->
+<div class="modal" id="furnishedVsUnfurnishedModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>🪑 Furnished vs Unfurnished Calculator</h2>
+<p>Decide which option saves you more money</p>
+<button class="close-modal" onclick="closeModal('furnishedVsUnfurnishedModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="furnishedVsUnfurnishedForm" onsubmit="calculateFurnishedVsUnfurnished(event)">
+
+<h4 style="margin:0 0 15px 0; color:#2b59ff;">Furnished Apartment</h4>
+
+<div class="form-group">
+<label>Monthly Rent (₦)</label>
+<input type="text" id="fvuFurnishedRent" placeholder="400,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Furnished apartments cost 20-50% more</span>
+</div>
+
+<div class="form-group">
+<label>Caution Deposit (₦)</label>
+<input type="text" id="fvuFurnishedDeposit" placeholder="400,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Usually higher for furnished apartments</span>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Unfurnished Apartment</h4>
+
+<div class="form-group">
+<label>Monthly Rent (₦)</label>
+<input type="text" id="fvuUnfurnishedRent" placeholder="300,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">Base rent without furniture</span>
+</div>
+
+<div class="form-group">
+<label>Caution Deposit (₦)</label>
+<input type="text" id="fvuUnfurnishedDeposit" placeholder="300,000" oninput="formatCurrency(this)" required>
+</div>
+
+<div class="form-group">
+<label>Furniture Purchase Cost (₦)</label>
+<input type="text" id="fvuFurnitureCost" placeholder="2,000,000" oninput="formatCurrency(this)" required>
+<span class="input-helper">One-time cost to furnish the apartment</span>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Comparison Settings</h4>
+
+<div class="form-group">
+<label>How Long Will You Stay? (Years)</label>
+<select id="fvuYears" required>
+<option value="1">1 year</option>
+<option value="2" selected>2 years</option>
+<option value="3">3 years</option>
+<option value="4">4 years</option>
+<option value="5">5 years</option>
+</select>
+<span class="input-helper">Longer stays favor buying furniture</span>
+</div>
+
+<div class="form-group">
+<label>Furniture Resale Value (%)</label>
+<select id="fvuResaleValue" required>
+<option value="20">20% - Poor condition</option>
+<option value="40">40% - Fair condition</option>
+<option value="60" selected>60% - Good condition</option>
+<option value="80">80% - Excellent condition</option>
+</select>
+<span class="input-helper">Expected resale value when you move out</span>
+</div>
+
+<button type="submit" class="calculate-btn">Compare Furnished vs Unfurnished</button>
+
+<div class="result-box" id="furnishedVsUnfurnishedResult">
+<h3>Furnished vs Unfurnished Comparison</h3>
+<div class="result-item">
+<span class="result-label">Furnished - Total Rent:</span>
+<span class="result-value" id="fvuResultFurnishedRent">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Furnished - Total Cost:</span>
+<span class="result-value" id="fvuResultFurnishedTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Unfurnished - Total Rent:</span>
+<span class="result-value" id="fvuResultUnfurnishedRent">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Furniture Cost:</span>
+<span class="result-value" id="fvuResultFurniture">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Furniture Resale Value:</span>
+<span class="result-value" id="fvuResultResale">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Unfurnished - Net Cost:</span>
+<span class="result-value" id="fvuResultUnfurnishedTotal">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Savings with:</span>
+<span class="result-value" id="fvuResultBetter" style="font-size:18px;">-</span>
+</div>
+<div class="result-item">
+<span class="result-label">Amount Saved:</span>
+<span class="result-value" id="fvuResultSavings">₦0</span>
 </div>
 </div>
 
@@ -2141,6 +2820,296 @@ function calculateWater(event){
     
     // Show result box
     document.getElementById('waterResult').classList.add('show');
+}
+
+// Rent vs Buy Calculator
+function calculateRentVsBuy(event){
+    event.preventDefault();
+    
+    const monthlyRent = getCurrencyValue('rvbMonthlyRent');
+    const rentIncrease = Number(document.getElementById('rvbRentIncrease').value) / 100;
+    const purchasePrice = getCurrencyValue('rvbPurchasePrice');
+    const downPayment = getCurrencyValue('rvbDownPayment');
+    const interestRate = Number(document.getElementById('rvbInterestRate').value) / 100;
+    const mortgageTerm = Number(document.getElementById('rvbMortgageTerm').value);
+    const propertyCosts = getCurrencyValue('rvbPropertyCosts');
+    const years = Number(document.getElementById('rvbYears').value);
+    
+    // Calculate mortgage
+    const loanAmount = purchasePrice - downPayment;
+    const monthlyRate = interestRate / 12;
+    const numPayments = mortgageTerm * 12;
+    const monthlyMortgage = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+    
+    // Calculate total rent cost with annual increases
+    let totalRent = 0;
+    let currentRent = monthlyRent;
+    for(let i = 0; i < years; i++){
+        totalRent += currentRent * 12;
+        currentRent = currentRent * (1 + rentIncrease);
+    }
+    
+    // Calculate total buy cost
+    const totalMortgagePayments = Math.min(years, mortgageTerm) * 12 * monthlyMortgage;
+    const totalPropertyCosts = propertyCosts * years;
+    const totalBuy = downPayment + totalMortgagePayments + totalPropertyCosts;
+    
+    const difference = Math.abs(totalRent - totalBuy);
+    const better = totalRent < totalBuy ? 'Renting' : 'Buying';
+    
+    const advice = totalRent < totalBuy 
+        ? `Renting is more cost-effective over ${years} years. You save ₦${difference.toLocaleString()} by renting. However, consider that buying builds equity and property value may appreciate.`
+        : `Buying is more cost-effective over ${years} years. You save ₦${difference.toLocaleString()} by buying. Plus, you build equity and own the property at the end.`;
+    
+    // Display results
+    document.getElementById('rvbResultRent').textContent = '₦' + Math.round(totalRent).toLocaleString();
+    document.getElementById('rvbResultBuy').textContent = '₦' + Math.round(totalBuy).toLocaleString();
+    document.getElementById('rvbResultMortgage').textContent = '₦' + Math.round(monthlyMortgage).toLocaleString();
+    document.getElementById('rvbResultDifference').textContent = '₦' + Math.round(difference).toLocaleString();
+    document.getElementById('rvbResultBetter').textContent = better;
+    document.getElementById('rvbResultBetter').style.color = better === 'Renting' ? '#00b377' : '#2b59ff';
+    document.getElementById('rvbAdvice').innerHTML = '<strong>Analysis:</strong><br>' + advice;
+    
+    // Show result box
+    document.getElementById('rentVsBuyResult').classList.add('show');
+}
+
+// Apartment vs House Calculator
+function calculateApartmentVsHouse(event){
+    event.preventDefault();
+    
+    const aptRent = getCurrencyValue('avhAptRent');
+    const aptService = getCurrencyValue('avhAptService');
+    const aptUtilities = getCurrencyValue('avhAptUtilities');
+    
+    const houseRent = getCurrencyValue('avhHouseRent');
+    const houseUtilities = getCurrencyValue('avhHouseUtilities');
+    const houseMaintenance = getCurrencyValue('avhHouseMaintenance');
+    const houseSecurity = getCurrencyValue('avhHouseSecurity');
+    
+    const years = Number(document.getElementById('avhYears').value);
+    
+    // Calculate annual costs
+    const aptAnnual = aptRent + aptService + (aptUtilities * 12);
+    const houseAnnual = houseRent + (houseUtilities * 12) + houseMaintenance + houseSecurity;
+    
+    // Calculate total costs
+    const aptTotal = aptAnnual * years;
+    const houseTotal = houseAnnual * years;
+    
+    const difference = Math.abs(aptTotal - houseTotal);
+    const better = aptTotal < houseTotal ? 'Apartment' : 'House';
+    
+    // Display results
+    document.getElementById('avhResultAptAnnual').textContent = '₦' + Math.round(aptAnnual).toLocaleString();
+    document.getElementById('avhResultHouseAnnual').textContent = '₦' + Math.round(houseAnnual).toLocaleString();
+    document.getElementById('avhResultAptTotal').textContent = '₦' + Math.round(aptTotal).toLocaleString();
+    document.getElementById('avhResultHouseTotal').textContent = '₦' + Math.round(houseTotal).toLocaleString();
+    document.getElementById('avhResultDifference').textContent = '₦' + Math.round(difference).toLocaleString();
+    document.getElementById('avhResultBetter').textContent = better;
+    document.getElementById('avhResultBetter').style.color = better === 'Apartment' ? '#00b377' : '#2b59ff';
+    
+    // Show result box
+    document.getElementById('apartmentVsHouseResult').classList.add('show');
+}
+
+// Furnished vs Unfurnished Calculator
+function calculateFurnishedVsUnfurnished(event){
+    event.preventDefault();
+    
+    const furnishedRent = getCurrencyValue('fvuFurnishedRent');
+    const furnishedDeposit = getCurrencyValue('fvuFurnishedDeposit');
+    
+    const unfurnishedRent = getCurrencyValue('fvuUnfurnishedRent');
+    const unfurnishedDeposit = getCurrencyValue('fvuUnfurnishedDeposit');
+    const furnitureCost = getCurrencyValue('fvuFurnitureCost');
+    
+    const years = Number(document.getElementById('fvuYears').value);
+    const resaleValue = Number(document.getElementById('fvuResaleValue').value) / 100;
+    
+    // Calculate costs
+    const furnishedTotalRent = furnishedRent * 12 * years;
+    const furnishedTotal = furnishedTotalRent + furnishedDeposit; // Deposit is refundable
+    
+    const unfurnishedTotalRent = unfurnishedRent * 12 * years;
+    const furnitureResale = furnitureCost * resaleValue;
+    const unfurnishedTotal = unfurnishedTotalRent + unfurnishedDeposit + furnitureCost - furnitureResale - unfurnishedDeposit; // Remove deposits as they're refundable
+    
+    const savings = Math.abs(furnishedTotal - unfurnishedTotal);
+    const better = furnishedTotal < unfurnishedTotal ? 'Furnished' : 'Unfurnished';
+    
+    // Display results
+    document.getElementById('fvuResultFurnishedRent').textContent = '₦' + Math.round(furnishedTotalRent).toLocaleString();
+    document.getElementById('fvuResultFurnishedTotal').textContent = '₦' + Math.round(furnishedTotalRent).toLocaleString(); // Only rent, deposit is refundable
+    document.getElementById('fvuResultUnfurnishedRent').textContent = '₦' + Math.round(unfurnishedTotalRent).toLocaleString();
+    document.getElementById('fvuResultFurniture').textContent = '₦' + furnitureCost.toLocaleString();
+    document.getElementById('fvuResultResale').textContent = '₦' + Math.round(furnitureResale).toLocaleString();
+    document.getElementById('fvuResultUnfurnishedTotal').textContent = '₦' + Math.round(unfurnishedTotal).toLocaleString();
+    document.getElementById('fvuResultBetter').textContent = better;
+    document.getElementById('fvuResultBetter').style.color = better === 'Furnished' ? '#2b59ff' : '#00b377';
+    document.getElementById('fvuResultSavings').textContent = '₦' + Math.round(savings).toLocaleString();
+    
+    // Show result box
+    document.getElementById('furnishedVsUnfurnishedResult').classList.add('show');
+}
+
+// Rent vs Buy Calculator
+function calculateRentVsBuy(event){
+    event.preventDefault();
+    
+    const monthlyRent = getCurrencyValue('rvbRent');
+    const rentIncrease = Number(document.getElementById('rvbRentIncrease').value) / 100;
+    const purchasePrice = getCurrencyValue('rvbPurchasePrice');
+    const downPayment = getCurrencyValue('rvbDownPayment');
+    const interestRate = Number(document.getElementById('rvbInterestRate').value) / 100;
+    const mortgageTerm = Number(document.getElementById('rvbMortgageTerm').value);
+    const maintenance = getCurrencyValue('rvbMaintenance');
+    const appreciation = Number(document.getElementById('rvbAppreciation').value) / 100;
+    const years = Number(document.getElementById('rvbYears').value);
+    
+    // Calculate total rent cost with annual increases
+    let totalRentCost = 0;
+    let currentRent = monthlyRent * 12;
+    for(let i = 0; i < years; i++){
+        totalRentCost += currentRent;
+        currentRent *= (1 + rentIncrease);
+    }
+    
+    // Calculate mortgage
+    const loanAmount = purchasePrice - downPayment;
+    const monthlyRate = interestRate / 12;
+    const numPayments = mortgageTerm * 12;
+    const monthlyMortgage = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+    
+    // Total buying costs
+    const totalMortgagePayments = Math.min(years, mortgageTerm) * 12 * monthlyMortgage;
+    const totalMaintenance = maintenance * years;
+    const totalBuyCost = downPayment + totalMortgagePayments + totalMaintenance;
+    
+    // Property value after appreciation
+    const propertyValue = purchasePrice * Math.pow(1 + appreciation, years);
+    
+    // Calculate equity
+    const paymentsYears = Math.min(years, mortgageTerm);
+    const totalPaid = paymentsYears * 12 * monthlyMortgage;
+    const principalPaid = totalPaid - (loanAmount * interestRate * paymentsYears);
+    const remainingLoan = Math.max(0, loanAmount - principalPaid);
+    const equity = propertyValue - remainingLoan;
+    
+    const difference = Math.abs(totalRentCost - (totalBuyCost - equity));
+    const better = totalRentCost < (totalBuyCost - equity) ? '🏢 Renting is Better' : '🏘️ Buying is Better';
+    
+    let advice = '';
+    if(totalRentCost < (totalBuyCost - equity)){
+        advice = `Renting saves you ₦${difference.toLocaleString()} over ${years} years. However, with buying, you build equity of ₦${equity.toLocaleString()}. Consider your long-term plans and whether you value flexibility (renting) or building wealth (buying).`;
+    } else {
+        advice = `Buying saves you ₦${difference.toLocaleString()} over ${years} years and you build ₦${equity.toLocaleString()} in equity. This makes buying more financially advantageous if you plan to stay long-term.`;
+    }
+    
+    // Display results
+    document.getElementById('rvbResultRentTotal').textContent = '₦' + Math.round(totalRentCost).toLocaleString();
+    document.getElementById('rvbResultBuyTotal').textContent = '₦' + Math.round(totalBuyCost).toLocaleString();
+    document.getElementById('rvbResultPropertyValue').textContent = '₦' + Math.round(propertyValue).toLocaleString();
+    document.getElementById('rvbResultEquity').textContent = '₦' + Math.round(equity).toLocaleString();
+    document.getElementById('rvbResultDifference').textContent = '₦' + Math.round(difference).toLocaleString();
+    document.getElementById('rvbResultBetter').textContent = better;
+    document.getElementById('rvbResultBetter').style.color = totalRentCost < (totalBuyCost - equity) ? '#ff6b35' : '#00b377';
+    document.getElementById('rvbAdvice').innerHTML = '<strong>Analysis:</strong><br>' + advice;
+    
+    document.getElementById('rentVsBuyResult').classList.add('show');
+}
+
+// Apartment vs House Calculator
+function calculateApartmentVsHouse(event){
+    event.preventDefault();
+    
+    const years = Number(document.getElementById('avhYears').value);
+    
+    // Apartment costs
+    const aptRent = getCurrencyValue('avhAptRent');
+    const aptService = getCurrencyValue('avhAptService');
+    const aptUtilities = getCurrencyValue('avhAptUtilities') * 12;
+    const aptAnnual = aptRent + aptService + aptUtilities;
+    const aptTotal = aptAnnual * years;
+    
+    // House costs
+    const houseRent = getCurrencyValue('avhHouseRent');
+    const houseMaintenance = getCurrencyValue('avhHouseMaintenance');
+    const houseUtilities = getCurrencyValue('avhHouseUtilities') * 12;
+    const houseSecurity = getCurrencyValue('avhHouseSecurity') * 12;
+    const houseFuel = getCurrencyValue('avhHouseFuel') * 12;
+    const houseAnnual = houseRent + houseMaintenance + houseUtilities + houseSecurity + houseFuel;
+    const houseTotal = houseAnnual * years;
+    
+    const difference = Math.abs(aptTotal - houseTotal);
+    const better = aptTotal < houseTotal ? '🏢 Apartment' : '🏠 House';
+    
+    const breakdown = `
+        <strong>Apartment Breakdown:</strong><br>
+        • Annual Rent: ₦${aptRent.toLocaleString()}<br>
+        • Service Charge: ₦${aptService.toLocaleString()}<br>
+        • Utilities: ₦${aptUtilities.toLocaleString()}<br><br>
+        <strong>House Breakdown:</strong><br>
+        • Annual Rent: ₦${houseRent.toLocaleString()}<br>
+        • Maintenance: ₦${houseMaintenance.toLocaleString()}<br>
+        • Utilities: ₦${houseUtilities.toLocaleString()}<br>
+        • Security: ₦${houseSecurity.toLocaleString()}<br>
+        • Generator Fuel: ₦${houseFuel.toLocaleString()}
+    `;
+    
+    document.getElementById('avhResultAptAnnual').textContent = '₦' + Math.round(aptAnnual).toLocaleString();
+    document.getElementById('avhResultHouseAnnual').textContent = '₦' + Math.round(houseAnnual).toLocaleString();
+    document.getElementById('avhResultAptTotal').textContent = '₦' + Math.round(aptTotal).toLocaleString();
+    document.getElementById('avhResultHouseTotal').textContent = '₦' + Math.round(houseTotal).toLocaleString();
+    document.getElementById('avhResultDifference').textContent = '₦' + Math.round(difference).toLocaleString();
+    document.getElementById('avhResultBetter').textContent = better;
+    document.getElementById('avhResultBetter').style.color = aptTotal < houseTotal ? '#2b59ff' : '#00b377';
+    document.getElementById('avhBreakdown').innerHTML = breakdown;
+    
+    document.getElementById('apartmentVsHouseResult').classList.add('show');
+}
+
+// Furnished vs Unfurnished Calculator (Updated)
+function calculateFurnishedVsUnfurnished(event){
+    event.preventDefault();
+    
+    const years = Number(document.getElementById('fvuYears').value);
+    const agentFee = Number(document.getElementById('fvuAgentFee').value) / 100;
+    
+    // Furnished costs
+    const furnishedRent = getCurrencyValue('fvuFurnishedRent') * 12;
+    const furnishedAgentFee = furnishedRent * agentFee;
+    const furnishedTotal = (furnishedRent * years) + furnishedAgentFee;
+    
+    // Unfurnished costs
+    const unfurnishedRent = getCurrencyValue('fvuUnfurnishedRent') * 12;
+    const furnishingCost = getCurrencyValue('fvuFurnishingCost');
+    const resalePercent = Number(document.getElementById('fvuResaleValue').value) / 100;
+    const resaleValue = furnishingCost * resalePercent;
+    const unfurnishedAgentFee = unfurnishedRent * agentFee;
+    const unfurnishedTotal = (unfurnishedRent * years) + furnishingCost + unfurnishedAgentFee;
+    const unfurnishedNet = unfurnishedTotal - resaleValue;
+    
+    const difference = Math.abs(furnishedTotal - unfurnishedNet);
+    const better = furnishedTotal < unfurnishedNet ? '🛋️ Furnished' : '🔧 Unfurnished';
+    
+    let advice = '';
+    if(furnishedTotal < unfurnishedNet){
+        advice = `Renting furnished saves you ₦${difference.toLocaleString()} over ${years} years. Ideal for short-term stays or if you prefer convenience.`;
+    } else {
+        advice = `Going unfurnished saves you ₦${difference.toLocaleString()} over ${years} years. Better for long-term stays and gives you control.`;
+    }
+    
+    document.getElementById('fvuResultFurnishedTotal').textContent = '₦' + Math.round(furnishedTotal).toLocaleString();
+    document.getElementById('fvuResultUnfurnishedTotal').textContent = '₦' + Math.round(unfurnishedTotal).toLocaleString();
+    document.getElementById('fvuResultResale').textContent = '₦' + Math.round(resaleValue).toLocaleString();
+    document.getElementById('fvuResultUnfurnishedNet').textContent = '₦' + Math.round(unfurnishedNet).toLocaleString();
+    document.getElementById('fvuResultDifference').textContent = '₦' + Math.round(difference).toLocaleString();
+    document.getElementById('fvuResultBetter').textContent = better;
+    document.getElementById('fvuResultBetter').style.color = furnishedTotal < unfurnishedNet ? '#ff6b35' : '#00b377';
+    document.getElementById('fvuAdvice').innerHTML = '<strong>Recommendation:</strong><br>' + advice;
+    
+    document.getElementById('furnishedVsUnfurnishedResult').classList.add('show');
 }
 
 // Rent Affordability Calculator
