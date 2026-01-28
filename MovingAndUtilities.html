@@ -590,6 +590,133 @@ MODAL / POPUP
     padding:35px;
 }
 
+/* Form Groups */
+.form-group{
+    margin-bottom:25px;
+}
+
+.form-group label{
+    display:block;
+    font-weight:700;
+    color:#333;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin-bottom:10px;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    padding:14px;
+    border-radius:8px;
+    border:2px solid #e0e6f0;
+    font-size:16px;
+    transition:all 0.3s ease;
+    background:#fafbfc;
+    box-sizing:border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+    outline:none;
+    border-color:#2b59ff;
+    background:white;
+    box-shadow:0 0 0 3px rgba(43, 89, 255, 0.1);
+}
+
+.input-helper{
+    font-size:13px;
+    color:#666;
+    margin-top:6px;
+    display:block;
+}
+
+.calculate-btn{
+    width:100%;
+    padding:16px;
+    background:linear-gradient(135deg, #2b59ff 0%, #5a7aff 100%);
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all 0.3s ease;
+    box-shadow:0 4px 15px rgba(43, 89, 255, 0.3);
+}
+
+.calculate-btn:hover{
+    background:linear-gradient(135deg, #1a47ff 0%, #4a6aff 100%);
+    transform:translateY(-2px);
+    box-shadow:0 6px 25px rgba(43, 89, 255, 0.4);
+}
+
+.calculate-btn:active{
+    transform:translateY(0);
+}
+
+.result-box{
+    margin-top:30px;
+    background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    padding:25px;
+    border-radius:10px;
+    border-left:4px solid #2b59ff;
+    box-shadow:0 2px 10px rgba(43, 89, 255, 0.1);
+    display:none;
+}
+
+.result-box.show{
+    display:block;
+    animation:resultFadeIn 0.5s ease;
+}
+
+@keyframes resultFadeIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.result-box h3{
+    margin:0 0 15px 0;
+    color:#2b59ff;
+    font-size:20px;
+}
+
+.result-item{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid rgba(43, 89, 255, 0.1);
+}
+
+.result-item:last-child{
+    border-bottom:none;
+    padding-top:15px;
+    margin-top:10px;
+    border-top:2px solid rgba(43, 89, 255, 0.2);
+}
+
+.result-label{
+    font-weight:600;
+    color:#444;
+}
+
+.result-value{
+    font-weight:700;
+    color:#2b59ff;
+    font-size:18px;
+}
+
+.result-item:last-child .result-value{
+    font-size:24px;
+}
+
 /* Checklist Timeline */
 .checklist-timeline{
     position:relative;
@@ -790,13 +917,13 @@ MODAL / POPUP
 <aside class="sidebar" id="sidebar">
 <h3>Navigation</h3>
 <ul>
-<li><a href="index.html">HOMEPAGE GOALS</a></li>
+<li><a href="tenant-tools-hub.html">HOMEPAGE GOALS</a></li>
 <li><a href="#hero">HERO SECTION (Top of Page)</a></li>
-<li><a href="FeaturedCalculators.html">FEATURED CALCULATORS</a></li>
-<li><a href="RentGuideSection.html">RENT GUIDES SECTION</a></li>
-<li><a href="MovingAndUtilities.html">MOVING & UTILITIES SECTION</a></li>
+<li><a href="calculators.html">FEATURED CALCULATORS</a></li>
+<li><a href="rent-guides.html">RENT GUIDES SECTION</a></li>
+<li><a href="#moving" class="active">MOVING & UTILITIES SECTION</a></li>
 <li><a href="#pdfs">FREE PDFS</a></li>
-<li><a href="LatestArticles.html">LATEST ARTICLES</a></li>
+<li><a href="latest-articles.html">LATEST ARTICLES</a></li>
 </ul>
 </aside>
 
@@ -833,7 +960,7 @@ MODAL / POPUP
 <div class="resource-grid">
 
 <!-- Moving Cost Calculator -->
-<div class="resource-card" onclick="alert('Calculator coming soon!')">
+<div class="resource-card" onclick="openModal('movingCostModal')">
 <div class="resource-header">
 <span class="resource-icon">💰</span>
 <h3>Moving Cost Calculator</h3>
@@ -853,7 +980,7 @@ MODAL / POPUP
 </div>
 
 <!-- Packing Tips -->
-<div class="resource-card" onclick="alert('Guide coming soon!')">
+<div class="resource-card" onclick="openModal('packingTipsModal')">
 <div class="resource-header">
 <span class="resource-icon">📦</span>
 <h3>Packing Tips</h3>
@@ -893,7 +1020,7 @@ MODAL / POPUP
 <div class="resource-grid">
 
 <!-- Electricity Cost Calculator -->
-<div class="resource-card" onclick="alert('Calculator coming soon!')">
+<div class="resource-card" onclick="openModal('electricityModal')">
 <div class="resource-header">
 <span class="resource-icon">💡</span>
 <h3>Electricity Cost Calculator</h3>
@@ -903,7 +1030,7 @@ MODAL / POPUP
 </div>
 
 <!-- Water Usage Calculator -->
-<div class="resource-card" onclick="alert('Calculator coming soon!')">
+<div class="resource-card" onclick="openModal('waterModal')">
 <div class="resource-header">
 <span class="resource-icon">💧</span>
 <h3>Water Usage Calculator</h3>
@@ -913,7 +1040,7 @@ MODAL / POPUP
 </div>
 
 <!-- Average Utility Bills -->
-<div class="resource-card" onclick="alert('Info coming soon!')">
+<div class="resource-card" onclick="openModal('utilityInfoModal')">
 <div class="resource-header">
 <span class="resource-icon">📊</span>
 <h3>Average Utility Bills</h3>
@@ -956,6 +1083,297 @@ MODAL / POPUP
 </div>
 
 <!-- MODALS -->
+
+<!-- Moving Cost Estimator Modal -->
+<div class="modal" id="movingCostModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>📦 Moving Cost Estimator</h2>
+<p>Calculate your complete moving expenses</p>
+<button class="close-modal" onclick="closeModal('movingCostModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="movingCostForm" onsubmit="calculateMovingCost(event)">
+
+<div class="form-group">
+<label>Distance Type</label>
+<select id="movingDistance" onchange="updateTransportCost()" required>
+<option value="local">Local (Within same area)</option>
+<option value="intracity">Intra-city (Across city)</option>
+<option value="interstate">Interstate (Different state)</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Apartment Size</label>
+<select id="movingSize" onchange="updateTransportCost()" required>
+<option value="studio">Studio/Self-contain</option>
+<option value="1bed">1 Bedroom</option>
+<option value="2bed" selected>2 Bedroom</option>
+<option value="3bed">3 Bedroom</option>
+<option value="4bed">4+ Bedrooms</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Estimated Transport Cost (₦)</label>
+<input type="text" id="movingTransport" placeholder="50,000" oninput="formatCurrency(this)" required>
+<span class="input-helper" id="transportHelper">Average for selected options</span>
+</div>
+
+<div class="form-group">
+<label>Number of Cartons Needed</label>
+<input type="number" id="movingCartons" min="0" value="20" required>
+<span class="input-helper">Cost per carton: ₦500-1,000</span>
+</div>
+
+<div class="form-group">
+<label>Packing Materials</label>
+<select id="movingPacking" required>
+<option value="5000">Basic (₦5,000)</option>
+<option value="10000" selected>Standard (₦10,000)</option>
+<option value="20000">Premium (₦20,000)</option>
+</select>
+<span class="input-helper">Tape, bubble wrap, markers, bags</span>
+</div>
+
+<div class="form-group">
+<label>Labor/Helpers (₦)</label>
+<input type="text" id="movingLabor" placeholder="10,000" oninput="formatCurrency(this)" value="10000">
+<span class="input-helper">Loaders, packers, helpers</span>
+</div>
+
+<div class="form-group">
+<label>Additional Costs (₦)</label>
+<input type="text" id="movingAdditional" placeholder="0" oninput="formatCurrency(this)" value="0">
+<span class="input-helper">Storage, special items, insurance, etc.</span>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Total Cost</button>
+
+<div class="result-box" id="movingCostResult">
+<h3>Your Moving Cost Breakdown</h3>
+<div class="result-item">
+<span class="result-label">Transport:</span>
+<span class="result-value" id="movingResultTransport">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Cartons:</span>
+<span class="result-value" id="movingResultCartons">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Packing Materials:</span>
+<span class="result-value" id="movingResultPacking">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Labor:</span>
+<span class="result-value" id="movingResultLabor">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Additional Costs:</span>
+<span class="result-value" id="movingResultAdditional">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Total Moving Cost:</span>
+<span class="result-value" id="movingResultTotal">₦0</span>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Packing Tips Modal -->
+<div class="modal" id="packingTipsModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>📦 Expert Packing Tips</h2>
+<p>Pack like a pro and protect your belongings</p>
+<button class="close-modal" onclick="closeModal('packingTipsModal')">×</button>
+</div>
+<div class="modal-body">
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">🎯 Before You Start</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li><strong>Start Early:</strong> Begin packing 2-3 weeks before moving day</li>
+<li><strong>Declutter First:</strong> Donate, sell, or discard items you don't need</li>
+<li><strong>Get Supplies:</strong> Boxes, tape, bubble wrap, markers, bags</li>
+<li><strong>Create Inventory:</strong> List valuable items and take photos</li>
+<li><strong>Pack Room by Room:</strong> Don't mix items from different rooms</li>
+</ul>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">📋 Essential Packing Supplies</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+<div>
+<strong style="color:#1a1a1a;">Must-Have Items:</strong>
+<ul style="margin:10px 0 0 0; padding-left:20px; color:#666; line-height:1.8;">
+<li>Carton boxes (various sizes)</li>
+<li>Packing tape (heavy duty)</li>
+<li>Bubble wrap</li>
+<li>Newspapers/papers</li>
+<li>Permanent markers</li>
+</ul>
+</div>
+<div>
+<strong style="color:#1a1a1a;">Nice to Have:</strong>
+<ul style="margin:10px 0 0 0; padding-left:20px; color:#666; line-height:1.8;">
+<li>Plastic wrap/cling film</li>
+<li>Rubber bands</li>
+<li>Scissors/box cutter</li>
+<li>Labels/stickers</li>
+<li>Ziploc bags</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">🏷️ Labeling System</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<p style="margin:0 0 15px 0; color:#666;"><strong>Label each box with:</strong></p>
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li><strong>Room name:</strong> Kitchen, Bedroom 1, Living Room</li>
+<li><strong>Contents:</strong> Brief description of items inside</li>
+<li><strong>Priority:</strong> "OPEN FIRST" for essentials</li>
+<li><strong>Handling:</strong> "FRAGILE" or "THIS SIDE UP"</li>
+<li><strong>Number:</strong> Box 1 of 10 (helps track everything)</li>
+</ul>
+<div style="background:linear-gradient(135deg, #fff9e6 0%, #fff5d6 100%); padding:15px; border-radius:8px; margin-top:15px; border-left:4px solid #ffb020;">
+<strong style="color:#ff8800;">💡 Pro Tip:</strong> Use color-coded markers - one color per room for quick identification!
+</div>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">🍽️ Kitchen Items</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li><strong>Plates & Bowls:</strong> Wrap each individually in newspaper, stack vertically (not flat)</li>
+<li><strong>Glasses:</strong> Wrap in bubble wrap, stuff newspaper inside, pack upright</li>
+<li><strong>Pots & Pans:</strong> Stack with paper between, fill empty spaces</li>
+<li><strong>Knives:</strong> Wrap blades in cardboard, secure with tape</li>
+<li><strong>Small Appliances:</strong> Use original boxes if available, or wrap in bubble wrap</li>
+<li><strong>Food Items:</strong> Pack non-perishables separately, label "OPEN FIRST"</li>
+</ul>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">👔 Clothing & Linens</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li><strong>Hanging Clothes:</strong> Keep on hangers, use garbage bags as garment bags</li>
+<li><strong>Folded Clothes:</strong> Pack in suitcases or vacuum bags to save space</li>
+<li><strong>Shoes:</strong> Stuff with paper, pack in pairs, original boxes work best</li>
+<li><strong>Bedding:</strong> Use as padding for fragile items or pack in vacuum bags</li>
+<li><strong>Towels:</strong> Great for wrapping breakables and filling gaps</li>
+</ul>
+<div style="background:linear-gradient(135deg, #e0fff4 0%, #ccfff0 100%); padding:15px; border-radius:8px; margin-top:15px; border-left:4px solid #00b377;">
+<strong style="color:#00b377;">💡 Space Saver:</strong> Vacuum-seal bags can reduce volume by 75%!
+</div>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">📺 Electronics</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li><strong>Take Photos:</strong> Of cable connections before unplugging</li>
+<li><strong>Original Boxes:</strong> Use if you still have them (best protection)</li>
+<li><strong>Wrap Screens:</strong> TVs and monitors need extra padding</li>
+<li><strong>Remove Batteries:</strong> From remotes and small devices</li>
+<li><strong>Bundle Cables:</strong> Use rubber bands or zip ties, label each cable</li>
+<li><strong>Backup Data:</strong> External drive or cloud before moving computers</li>
+</ul>
+<div style="background:linear-gradient(135deg, #ffe6e6 0%, #ffd6d6 100%); padding:15px; border-radius:8px; margin-top:15px; border-left:4px solid #ff4444;">
+<strong style="color:#cc0000;">⚠️ Important:</strong> Never pack electronics with liquids or food items!
+</div>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">🪞 Fragile Items</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li><strong>Double Box Method:</strong> Place fragile box inside larger box with padding between</li>
+<li><strong>Bubble Wrap:</strong> Use generously, especially for corners</li>
+<li><strong>Fill Empty Spaces:</strong> No items should move when box is shaken</li>
+<li><strong>Mirrors & Glass:</strong> Tape in X pattern, use cardboard corners</li>
+<li><strong>Mark Clearly:</strong> Write "FRAGILE" on all sides in large letters</li>
+<li><strong>Pack Last, Unload First:</strong> Keep fragile items accessible</li>
+</ul>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">📚 Books & Documents</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li><strong>Small Boxes Only:</strong> Books are heavy - use small cartons</li>
+<li><strong>Pack Flat:</strong> Lay books flat to prevent spine damage</li>
+<li><strong>Don't Overfill:</strong> Leave space for easy lifting</li>
+<li><strong>Important Documents:</strong> Keep passports, certificates with you</li>
+<li><strong>Waterproof:</strong> Use plastic bags for valuable papers</li>
+</ul>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">🎨 Special Items</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li><strong>Artwork & Frames:</strong> Wrap in bubble wrap, use corner protectors</li>
+<li><strong>Plants:</strong> Pack in open boxes, water 2-3 days before</li>
+<li><strong>Jewelry:</strong> Keep valuable items with you, not in moving truck</li>
+<li><strong>Cleaning Supplies:</strong> Seal lids with tape, pack upright, separate box</li>
+<li><strong>Tools:</strong> Wrap sharp items, secure in toolbox or sturdy box</li>
+</ul>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">🎒 Essentials Bag (Pack Last)</h3>
+<div style="background:linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); padding:20px; border-radius:10px; border-left:4px solid #2b59ff;">
+<p style="margin:0 0 15px 0; color:#444;"><strong>Pack a bag with items you'll need immediately:</strong></p>
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li>Toiletries & medications</li>
+<li>Change of clothes (2-3 days)</li>
+<li>Phone chargers & electronics</li>
+<li>Important documents</li>
+<li>Snacks & water</li>
+<li>Cleaning supplies for new place</li>
+<li>Toilet paper & paper towels</li>
+<li>Basic tools (screwdriver, hammer)</li>
+<li>Bed linens for first night</li>
+</ul>
+</div>
+</div>
+
+<div style="background:linear-gradient(135deg, #fff9e6 0%, #fff5d6 100%); padding:20px; border-radius:10px; border-left:4px solid #ffb020;">
+<h4 style="margin:0 0 15px 0; color:#ff8800;">⚡ Quick Packing Hacks</h4>
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li>Use suitcases for heavy items like books</li>
+<li>Pack a box of cleaning supplies for both old & new place</li>
+<li>Take photos of furniture assembly for easy reassembly</li>
+<li>Keep hardware in labeled Ziploc bags taped to furniture</li>
+<li>Use towels and linens as padding to save on bubble wrap</li>
+<li>Pack plates vertically like records - they're less likely to break</li>
+<li>Wrap liquids in plastic wrap before capping to prevent leaks</li>
+<li>Make a "load last, unload first" box for immediate needs</li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
 
 <!-- Moving Checklist Modal -->
 <div class="modal" id="checklistModal">
@@ -1229,6 +1647,292 @@ MODAL / POPUP
 </div>
 </div>
 
+<!-- Electricity Cost Calculator Modal -->
+<div class="modal" id="electricityModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>💡 Electricity Cost Calculator</h2>
+<p>Estimate your monthly electricity bill</p>
+<button class="close-modal" onclick="closeModal('electricityModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="electricityForm" onsubmit="calculateElectricity(event)">
+
+<div class="form-group">
+<label>Electricity Tariff (₦/kWh)</label>
+<select id="electricityTariff" required>
+<option value="50">Band A - ₦50/kWh (20+ hours)</option>
+<option value="75" selected>Band B - ₦75/kWh (16-20 hours)</option>
+<option value="100">Band C - ₦100/kWh (12-16 hours)</option>
+<option value="125">Band D - ₦125/kWh (8-12 hours)</option>
+<option value="150">Band E - ₦150/kWh (<8 hours)</option>
+</select>
+<span class="input-helper">Select your distribution company's tariff band</span>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Major Appliances</h4>
+
+<div class="form-group">
+<label>Air Conditioner(s)</label>
+<input type="number" id="elecAC" min="0" value="0" placeholder="Number of units">
+<span class="input-helper">~1500W each, 8 hours/day average</span>
+</div>
+
+<div class="form-group">
+<label>Refrigerator(s)</label>
+<input type="number" id="elecFridge" min="0" value="1" placeholder="Number of units">
+<span class="input-helper">~150W each, 24 hours/day</span>
+</div>
+
+<div class="form-group">
+<label>Freezer(s)</label>
+<input type="number" id="elecFreezer" min="0" value="0" placeholder="Number of units">
+<span class="input-helper">~200W each, 24 hours/day</span>
+</div>
+
+<div class="form-group">
+<label>TV(s)</label>
+<input type="number" id="elecTV" min="0" value="1" placeholder="Number of units">
+<span class="input-helper">~100W each, 6 hours/day average</span>
+</div>
+
+<div class="form-group">
+<label>Washing Machine</label>
+<input type="number" id="elecWashing" min="0" value="0" placeholder="Number of units">
+<span class="input-helper">~500W each, 1 hour/day average</span>
+</div>
+
+<div class="form-group">
+<label>Iron</label>
+<input type="number" id="elecIron" min="0" value="1" placeholder="Number of units">
+<span class="input-helper">~1000W each, 0.5 hours/day average</span>
+</div>
+
+<h4 style="margin:30px 0 15px 0; color:#2b59ff;">Lighting & Others</h4>
+
+<div class="form-group">
+<label>LED Bulbs</label>
+<input type="number" id="elecBulbs" min="0" value="8" placeholder="Number of bulbs">
+<span class="input-helper">~10W each, 5 hours/day average</span>
+</div>
+
+<div class="form-group">
+<label>Fans</label>
+<input type="number" id="elecFans" min="0" value="2" placeholder="Number of units">
+<span class="input-helper">~75W each, 8 hours/day average</span>
+</div>
+
+<div class="form-group">
+<label>Other Appliances (Total Watts)</label>
+<input type="number" id="elecOther" min="0" value="0" placeholder="Total wattage">
+<span class="input-helper">Phone chargers, laptops, microwaves, etc.</span>
+</div>
+
+<div class="form-group">
+<label>Days per Month</label>
+<input type="number" id="elecDays" min="1" max="31" value="30" required>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Electricity Bill</button>
+
+<div class="result-box" id="electricityResult">
+<h3>Your Electricity Cost Estimate</h3>
+<div class="result-item">
+<span class="result-label">Total Daily Consumption:</span>
+<span class="result-value" id="elecResultDaily">0 kWh</span>
+</div>
+<div class="result-item">
+<span class="result-label">Monthly Consumption:</span>
+<span class="result-value" id="elecResultMonthly">0 kWh</span>
+</div>
+<div class="result-item">
+<span class="result-label">Tariff Rate:</span>
+<span class="result-value" id="elecResultTariff">₦0/kWh</span>
+</div>
+<div class="result-item">
+<span class="result-label">Estimated Monthly Bill:</span>
+<span class="result-value" id="elecResultTotal">₦0</span>
+</div>
+<div class="result-item" style="border:none; padding-top:20px; margin-top:20px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="elecBreakdown" style="background:white; padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Water Usage Calculator Modal -->
+<div class="modal" id="waterModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>💧 Water Usage Calculator</h2>
+<p>Estimate your monthly water consumption and costs</p>
+<button class="close-modal" onclick="closeModal('waterModal')">×</button>
+</div>
+<div class="modal-body">
+<form id="waterForm" onsubmit="calculateWater(event)">
+
+<div class="form-group">
+<label>Number of People in Household</label>
+<input type="number" id="waterPeople" min="1" value="4" required>
+<span class="input-helper">Average person uses 50-150 liters/day in Nigeria</span>
+</div>
+
+<div class="form-group">
+<label>Water Usage Level per Person</label>
+<select id="waterUsageLevel" required>
+<option value="50">Low (50 liters/day)</option>
+<option value="100" selected>Moderate (100 liters/day)</option>
+<option value="150">High (150 liters/day)</option>
+</select>
+<span class="input-helper">Based on bathing, cooking, cleaning habits</span>
+</div>
+
+<div class="form-group">
+<label>Water Source</label>
+<select id="waterSource" onchange="updateWaterRate()" required>
+<option value="borehole">Private Borehole</option>
+<option value="municipal" selected>Municipal/Public Supply</option>
+<option value="vendor">Water Vendor/Truck</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Cost per 1000 Liters (₦)</label>
+<input type="text" id="waterRate" placeholder="500" oninput="formatCurrency(this)" required>
+<span class="input-helper" id="waterRateHelper">Typical rate for selected source</span>
+</div>
+
+<div class="form-group">
+<label>Additional Usage (Liters/Month)</label>
+<input type="number" id="waterAdditional" min="0" value="0" placeholder="0">
+<span class="input-helper">Laundry, car washing, gardening, etc.</span>
+</div>
+
+<button type="submit" class="calculate-btn">Calculate Water Cost</button>
+
+<div class="result-box" id="waterResult">
+<h3>Your Water Usage Estimate</h3>
+<div class="result-item">
+<span class="result-label">Daily Usage:</span>
+<span class="result-value" id="waterResultDaily">0 L</span>
+</div>
+<div class="result-item">
+<span class="result-label">Monthly Usage:</span>
+<span class="result-value" id="waterResultMonthly">0 L</span>
+</div>
+<div class="result-item">
+<span class="result-label">Cost per 1000L:</span>
+<span class="result-value" id="waterResultRate">₦0</span>
+</div>
+<div class="result-item">
+<span class="result-label">Estimated Monthly Bill:</span>
+<span class="result-value" id="waterResultTotal">₦0</span>
+</div>
+<div class="result-item" style="border:none; padding-top:15px; margin-top:15px; border-top:2px solid rgba(43, 89, 255, 0.2);">
+<div id="waterTips" style="background:linear-gradient(135deg, #e0fff4 0%, #ccfff0 100%); padding:15px; border-radius:8px; font-size:14px; line-height:1.6; color:#444;">
+<strong style="color:#00b377;">💡 Water Saving Tips:</strong><br>
+• Fix leaking taps immediately<br>
+• Use buckets instead of running taps<br>
+• Reuse water where possible<br>
+• Take shorter showers
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<!-- Average Utility Bills Info Modal -->
+<div class="modal" id="utilityInfoModal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>📊 Average Utility Bills in Nigeria</h2>
+<p>Typical monthly costs by city and apartment type</p>
+<button class="close-modal" onclick="closeModal('utilityInfoModal')">×</button>
+</div>
+<div class="modal-body">
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">💡 Electricity Bills</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4; margin-bottom:20px;">
+<h4 style="margin:0 0 15px 0; color:#1a1a1a;">Lagos</h4>
+<ul style="margin:0; padding-left:20px; color:#666;">
+<li>Studio/1 Bedroom: ₦8,000 - ₦15,000</li>
+<li>2 Bedroom: ₦15,000 - ₦25,000</li>
+<li>3 Bedroom: ₦25,000 - ₦40,000</li>
+<li>4+ Bedroom: ₦40,000 - ₦70,000</li>
+</ul>
+</div>
+
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4; margin-bottom:20px;">
+<h4 style="margin:0 0 15px 0; color:#1a1a1a;">Abuja</h4>
+<ul style="margin:0; padding-left:20px; color:#666;">
+<li>Studio/1 Bedroom: ₦10,000 - ₦18,000</li>
+<li>2 Bedroom: ₦18,000 - ₦30,000</li>
+<li>3 Bedroom: ₦30,000 - ₦50,000</li>
+<li>4+ Bedroom: ₦50,000 - ₦80,000</li>
+</ul>
+</div>
+
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<h4 style="margin:0 0 15px 0; color:#1a1a1a;">Port Harcourt</h4>
+<ul style="margin:0; padding-left:20px; color:#666;">
+<li>Studio/1 Bedroom: ₦7,000 - ₦12,000</li>
+<li>2 Bedroom: ₦12,000 - ₦20,000</li>
+<li>3 Bedroom: ₦20,000 - ₦35,000</li>
+<li>4+ Bedroom: ₦35,000 - ₦60,000</li>
+</ul>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">💧 Water Bills</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<ul style="margin:0; padding-left:20px; color:#666;">
+<li><strong>Municipal Water:</strong> ₦2,000 - ₦8,000/month</li>
+<li><strong>Private Borehole:</strong> ₦500 - ₦3,000/month (maintenance only)</li>
+<li><strong>Water Vendor:</strong> ₦8,000 - ₦20,000/month</li>
+<li><strong>Estate Service Charge:</strong> ₦3,000 - ₦10,000/month (often included)</li>
+</ul>
+</div>
+</div>
+
+<div style="margin-bottom:30px;">
+<h3 style="color:#2b59ff; margin-bottom:15px;">📺 Other Utilities</h3>
+<div style="background:white; padding:20px; border-radius:10px; border:1px solid #e8ecf4;">
+<ul style="margin:0; padding-left:20px; color:#666;">
+<li><strong>Internet/WiFi:</strong> ₦8,000 - ₦25,000/month</li>
+<li><strong>DSTV/Cable TV:</strong> ₦2,000 - ₦20,000/month</li>
+<li><strong>Gas (Cooking):</strong> ₦5,000 - ₦15,000/month</li>
+<li><strong>Waste Collection:</strong> ₦1,000 - ₦5,000/month</li>
+<li><strong>Security (Estate):</strong> ₦2,000 - ₦10,000/month</li>
+</ul>
+</div>
+</div>
+
+<div style="background:linear-gradient(135deg, #fff9e6 0%, #fff5d6 100%); padding:20px; border-radius:10px; border-left:4px solid #ffb020;">
+<h4 style="margin:0 0 15px 0; color:#ff8800;">💡 Money-Saving Tips</h4>
+<ul style="margin:0; padding-left:20px; color:#666; line-height:1.8;">
+<li>Use energy-efficient LED bulbs</li>
+<li>Unplug appliances when not in use</li>
+<li>Service AC units regularly</li>
+<li>Use gas for cooking instead of electric stoves</li>
+<li>Install solar panels for backup (long-term savings)</li>
+<li>Fix water leaks immediately</li>
+<li>Negotiate bundle deals with service providers</li>
+</ul>
+</div>
+
+</div>
+</div>
+</div>
+
 <!-- SCRIPT -->
 <script>
 
@@ -1283,8 +1987,152 @@ function toggleCheck(item){
     item.classList.toggle('checked');
 }
 
+// Currency formatting
+function formatCurrency(input){
+    let value = input.value.replace(/,/g, '');
+    if(isNaN(value) || value === '') return;
+    input.value = Number(value).toLocaleString();
+}
+
+function getCurrencyValue(inputId){
+    const value = document.getElementById(inputId).value.replace(/,/g, '');
+    return Number(value) || 0;
+}
+
+// Update transport cost based on distance and size
+function updateTransportCost(){
+    const distance = document.getElementById('movingDistance').value;
+    const size = document.getElementById('movingSize').value;
+    
+    const costs = {
+        local: {studio: 15000, '1bed': 20000, '2bed': 30000, '3bed': 40000, '4bed': 50000},
+        intracity: {studio: 30000, '1bed': 40000, '2bed': 60000, '3bed': 80000, '4bed': 100000},
+        interstate: {studio: 80000, '1bed': 120000, '2bed': 180000, '3bed': 250000, '4bed': 350000}
+    };
+    
+    const estimatedCost = costs[distance][size];
+    document.getElementById('movingTransport').value = estimatedCost.toLocaleString();
+    document.getElementById('transportHelper').textContent = `Estimated: ₦${estimatedCost.toLocaleString()} for ${size} ${distance} move`;
+}
+
+// Moving Cost Calculator
+function calculateMovingCost(event){
+    event.preventDefault();
+    
+    const transport = getCurrencyValue('movingTransport');
+    const cartons = Number(document.getElementById('movingCartons').value);
+    const cartonCost = cartons * 750; // Average ₦750 per carton
+    const packing = Number(document.getElementById('movingPacking').value);
+    const labor = getCurrencyValue('movingLabor');
+    const additional = getCurrencyValue('movingAdditional');
+    
+    const total = transport + cartonCost + packing + labor + additional;
+    
+    // Display results
+    document.getElementById('movingResultTransport').textContent = '₦' + transport.toLocaleString();
+    document.getElementById('movingResultCartons').textContent = '₦' + cartonCost.toLocaleString() + ` (${cartons} × ₦750)`;
+    document.getElementById('movingResultPacking').textContent = '₦' + packing.toLocaleString();
+    document.getElementById('movingResultLabor').textContent = '₦' + labor.toLocaleString();
+    document.getElementById('movingResultAdditional').textContent = '₦' + additional.toLocaleString();
+    document.getElementById('movingResultTotal').textContent = '₦' + total.toLocaleString();
+    
+    // Show result box
+    document.getElementById('movingCostResult').classList.add('show');
+}
+
+// Update water rate based on source
+function updateWaterRate(){
+    const source = document.getElementById('waterSource').value;
+    const rates = {
+        borehole: 200,
+        municipal: 500,
+        vendor: 1500
+    };
+    
+    const helpers = {
+        borehole: 'Maintenance and pumping costs only',
+        municipal: 'Typical government water board rate',
+        vendor: 'Average water truck/vendor rate'
+    };
+    
+    document.getElementById('waterRate').value = rates[source].toLocaleString();
+    document.getElementById('waterRateHelper').textContent = helpers[source];
+}
+
+// Electricity Calculator
+function calculateElectricity(event){
+    event.preventDefault();
+    
+    const tariff = Number(document.getElementById('electricityTariff').value);
+    const days = Number(document.getElementById('elecDays').value);
+    
+    // Calculate daily consumption for each appliance (in kWh)
+    const ac = Number(document.getElementById('elecAC').value) * 1.5 * 8; // 1500W, 8 hrs
+    const fridge = Number(document.getElementById('elecFridge').value) * 0.15 * 24; // 150W, 24 hrs
+    const freezer = Number(document.getElementById('elecFreezer').value) * 0.2 * 24; // 200W, 24 hrs
+    const tv = Number(document.getElementById('elecTV').value) * 0.1 * 6; // 100W, 6 hrs
+    const washing = Number(document.getElementById('elecWashing').value) * 0.5 * 1; // 500W, 1 hr
+    const iron = Number(document.getElementById('elecIron').value) * 1 * 0.5; // 1000W, 0.5 hrs
+    const bulbs = Number(document.getElementById('elecBulbs').value) * 0.01 * 5; // 10W, 5 hrs
+    const fans = Number(document.getElementById('elecFans').value) * 0.075 * 8; // 75W, 8 hrs
+    const other = Number(document.getElementById('elecOther').value) * 4 / 1000; // Assuming 4 hrs avg
+    
+    const dailyKwh = ac + fridge + freezer + tv + washing + iron + bulbs + fans + other;
+    const monthlyKwh = dailyKwh * days;
+    const monthlyBill = monthlyKwh * tariff;
+    
+    // Create breakdown
+    const breakdown = `
+        <strong>Daily Consumption Breakdown:</strong><br>
+        ${ac > 0 ? `• Air Conditioner: ${ac.toFixed(2)} kWh<br>` : ''}
+        ${fridge > 0 ? `• Refrigerator: ${fridge.toFixed(2)} kWh<br>` : ''}
+        ${freezer > 0 ? `• Freezer: ${freezer.toFixed(2)} kWh<br>` : ''}
+        ${tv > 0 ? `• TV: ${tv.toFixed(2)} kWh<br>` : ''}
+        ${washing > 0 ? `• Washing Machine: ${washing.toFixed(2)} kWh<br>` : ''}
+        ${iron > 0 ? `• Iron: ${iron.toFixed(2)} kWh<br>` : ''}
+        ${bulbs > 0 ? `• LED Bulbs: ${bulbs.toFixed(2)} kWh<br>` : ''}
+        ${fans > 0 ? `• Fans: ${fans.toFixed(2)} kWh<br>` : ''}
+        ${other > 0 ? `• Other Appliances: ${other.toFixed(2)} kWh<br>` : ''}
+    `;
+    
+    // Display results
+    document.getElementById('elecResultDaily').textContent = dailyKwh.toFixed(2) + ' kWh';
+    document.getElementById('elecResultMonthly').textContent = monthlyKwh.toFixed(2) + ' kWh';
+    document.getElementById('elecResultTariff').textContent = '₦' + tariff.toLocaleString() + '/kWh';
+    document.getElementById('elecResultTotal').textContent = '₦' + Math.round(monthlyBill).toLocaleString();
+    document.getElementById('elecBreakdown').innerHTML = breakdown;
+    
+    // Show result box
+    document.getElementById('electricityResult').classList.add('show');
+}
+
+// Water Calculator
+function calculateWater(event){
+    event.preventDefault();
+    
+    const people = Number(document.getElementById('waterPeople').value);
+    const usageLevel = Number(document.getElementById('waterUsageLevel').value);
+    const rate = getCurrencyValue('waterRate');
+    const additional = Number(document.getElementById('waterAdditional').value);
+    
+    // Calculate usage
+    const dailyUsage = people * usageLevel;
+    const monthlyUsage = (dailyUsage * 30) + additional;
+    
+    // Calculate cost
+    const monthlyCost = (monthlyUsage / 1000) * rate;
+    
+    // Display results
+    document.getElementById('waterResultDaily').textContent = dailyUsage.toLocaleString() + ' L';
+    document.getElementById('waterResultMonthly').textContent = monthlyUsage.toLocaleString() + ' L';
+    document.getElementById('waterResultRate').textContent = '₦' + rate.toLocaleString();
+    document.getElementById('waterResultTotal').textContent = '₦' + Math.round(monthlyCost).toLocaleString();
+    
+    // Show result box
+    document.getElementById('waterResult').classList.add('show');
+}
+
 </script>
 
 </body>
-
 </html>
