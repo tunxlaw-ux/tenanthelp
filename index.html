@@ -545,10 +545,10 @@ RESPONSIVE
 <h2 style="text-align:center;">Enter Your Details</h2>
 <p style="text-align:center;">Fees are percentages of total rent.</p>
 
-<div class="calculator-box">
-
-<label>Monthly Rent (₦)</label>
-<input type="text" id="rent" placeholder="300,000" oninput="formatRent(this)">
+<div class="form-group">
+    <label for="rent">Yearly Rent (₦)</label>
+    <input type="text" id="rent" placeholder="1,200,000" oninput="formatRent(this)">
+</div>
 
 <label>Number of Years</label>
 <input type="number" id="years" min="1" value="1">
@@ -629,41 +629,48 @@ function toggleSidebar(){
     }
 }
 
-function formatRent(input){
-    let value = input.value.replace(/,/g,'');
-    if(isNaN(value)) return;
-    input.value = Number(value).toLocaleString();
-}
+/**
+ * Main Calculation Logic - Updated for Yearly Rent
+ */
+function calculate() {
+    const yearlyRent = getRawValue('rent'); // Now treated as annual
+    const years = Number(document.getElementById('years').value) || 1;
+    
+    // Percentages
+    const agentP = Number(document.getElementById('agent').value) || 0;
+    const legalP = Number(document.getElementById('legal').value) || 0;
+    const agreementP = Number(document.getElementById('agreement').value) || 0;
 
-function getRent(){
-    return Number(document.getElementById("rent").value.replace(/,/g,'')) || 0;
-}
+    // Totals - Multiplies yearly rent by number of years
+    const totalBaseRent = yearlyRent * years; 
+    
+    // Fees are calculated as a percentage of the total rent for the period
+    const agentFee = totalBaseRent * (agentP / 100);
+    const legalFee = totalBaseRent * (legalP / 100);
+    const agreementFee = totalBaseRent * (agreementP / 100);
+    const totalCost = totalBaseRent + agentFee + legalFee + agreementFee;
 
-function calculate(){
-
-let rent = getRent();
-let years = Number(document.getElementById("years").value) || 1;
-
-let agentP = Number(document.getElementById("agent").value) || 0;
-let legalP = Number(document.getElementById("legal").value) || 0;
-let agreementP = Number(document.getElementById("agreement").value) || 0;
-
-let rentTotal = rent * years;
-
-let agentFee = rentTotal * agentP / 100;
-let legalFee = rentTotal * legalP / 100;
-let agreementFee = rentTotal * agreementP / 100;
-
-let total = rentTotal + agentFee + legalFee + agreementFee;
-
-document.getElementById("result").innerHTML = `
-Rent (${years} year): ₦${rentTotal.toLocaleString()}<br>
-Agent Fee: ₦${agentFee.toLocaleString()}<br>
-Legal Fee: ₦${legalFee.toLocaleString()}<br>
-Agreement Fee: ₦${agreementFee.toLocaleString()}<br><br>
-<b>Total Move-In Cost: ₦${total.toLocaleString()}</b>
-`;
-
+    // Display Output
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span>Total Rent (${years} yr):</span>
+            <strong>₦${totalBaseRent.toLocaleString()}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span>Agent Fee:</span>
+            <strong>₦${agentFee.toLocaleString()}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span>Legal & Agreement:</span>
+            <strong>₦${(legalFee + agreementFee).toLocaleString()}</strong>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+        <div style="display: flex; justify-content: space-between; color: #2b59ff; font-size: 1.2rem;">
+            <strong>Total Move-In Cost:</strong>
+            <strong>₦${totalCost.toLocaleString()}</strong>
+        </div>
+    `;
 }
 
 </script>
@@ -671,6 +678,7 @@ Agreement Fee: ₦${agreementFee.toLocaleString()}<br><br>
 </body>
 
 </html>
+
 
 
 
